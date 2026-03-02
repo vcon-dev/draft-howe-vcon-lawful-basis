@@ -2,7 +2,8 @@
 title: "vCon Lawful Basis"
 abbrev: "vCon Lawful Basis"
 category: std
-docname: draft-howe-vcon-lawful-basis-00
+docname: draft-howe-vcon-lawful-basis-01
+date: 2026-03-02
 replaces: draft-howe-vcon-consent-00
 ipr: trust200902
 area: "Applications and Real-Time"
@@ -14,7 +15,7 @@ venue:
   mail: "vcon@ietf.org"
   arch: "https://mailarchive.ietf.org/arch/browse/vcon/"
   github: "vcon-dev/draft-howe-vcon-lawful-basis"
-  latest: "https://vcon-dev.github.io/draft-howe-vcon-consent/draft-howe-vcon-lawful-basis-latest.html"
+  latest: "https://vcon-dev.github.io/draft-howe-vcon-lawful-basis/draft-howe-vcon-lawful-basis-latest.html"
 
 stand_alone: yes
 smart_quotes: no
@@ -23,12 +24,11 @@ pi: [toc, sortrefs, symrefs]
 author:
  -
     name: Thomas McCarthy-Howe
-    organization: Strolid
+    organization: VCONIC
     email: ghostofbasho@gmail.com
+    country: United States
 
 normative:
-  RFC2119:
-  RFC8174:
   RFC3339:
     target: https://www.rfc-editor.org/rfc/rfc3339.html
     title: "Date and Time on the Internet: Timestamps"
@@ -37,38 +37,31 @@ normative:
       ins: G. Klyne
     date: July 2002
 
-  I-D.draft-ietf-vcon-core-00:
-    target: I-D.draft-ietf-vcon-core-00
-    title: "Virtualized Conversation (vCon) Container"
+  I-D.draft-ietf-vcon-vcon-core:
+    target: https://datatracker.ietf.org/doc/draft-ietf-vcon-vcon-core/
+    title: "The JSON format for vCon - Conversation Data Container"
     author:
       -
-        ins: D. Petrie
-        name: Daniel Petrie
+        ins: D. G Petrie
+        name: Daniel G Petrie
         org: SIPez LLC
-    date: March 2025
+    date: January 2026
     seriesinfo:
-      Internet-Draft: draft-ietf-vcon-core-00
+      Internet-Draft: draft-ietf-vcon-vcon-core-02
 
-  I-D.draft-ietf-scitt-scrapi-05:
-    target: I-D.draft-ietf-scitt-scrapi-05
-    title: "SCITT Receipt API"
+  I-D.draft-ietf-scitt-scrapi-07:
+    target: https://datatracker.ietf.org/doc/draft-ietf-scitt-scrapi/07/
+    title: "SCITT Reference REST API"
     author:
       -
         ins: H. Birkholz
         name: Henk Birkholz
         org: Fraunhofer SIT
-    date: February 2025
+    date: November 2025
     seriesinfo:
-      Internet-Draft: draft-ietf-scitt-scrapi-05
+      Internet-Draft: draft-ietf-scitt-scrapi-07
 
-  RFC8949:
-    target: https://www.rfc-editor.org/rfc/rfc8949.html
-    title: "Concise Binary Object Representation (CBOR)"
-    author:
-      name: C. Bormann
-      ins: C. Bormann
-    date: December 2020
-
+informative:
   RFC8785:
     target: https://www.rfc-editor.org/rfc/rfc8785.html
     title: "JSON Canonicalization Scheme (JCS)"
@@ -87,17 +80,16 @@ normative:
       org: Independent
     date: November 2015
 
-informative:
   I-D.draft-ietf-vcon-overview:
-    target: I-D.draft-ietf-vcon-overview-00
+    target: https://datatracker.ietf.org/doc/draft-ietf-vcon-overview/
     title: "The vCon - Conversation Data Container - Overview"
     author:
       -
         name: Thomas McCarthy-Howe
-        org: Strolid
-    date: July 2025
+        org: VCONIC
+    date: 2025
     seriesinfo:
-      Internet-Draft: draft-ietf-vcon-overview-00
+      Internet-Draft: draft-ietf-vcon-overview
 
   GDPR:
     target: https://gdpr.eu/
@@ -160,11 +152,11 @@ Key features include automated lawful basis detection during conversation proces
 
 # Introduction
 
-Conversations originating from all modes (voice, video, email, fax and messaging), contain sensitive information that requires a documented lawful basis for processing to comply with privacy regulations and ethical standards. This document defines a lawful basis extension for Virtualized Conversations (vCon) that enables automated lawful basis detection, structured recording, and cryptographic proof mechanisms.
+Conversations originating from all modes (voice, video, email, fax and messaging) [I-D.draft-ietf-vcon-overview], contain sensitive information that requires a documented lawful basis for processing to comply with privacy regulations and ethical standards. This document defines a lawful basis extension for Virtualized Conversations (vCon) that enables automated lawful basis detection, structured recording, and cryptographic proof mechanisms.
 
-A vCon (Virtualized Conversation) is a standardized container format for storing conversation data, including metadata, participants, and conversation content, as defined in [I-D.draft-ietf-vcon-core-00]. The vCon specification supports extensible attachments that can carry additional structured data related to the conversation.
+A vCon (Virtualized Conversation) is a standardized container format for storing conversation data, including metadata, participants, and conversation content, as defined in [I-D.draft-ietf-vcon-vcon-core]. The vCon specification supports extensible attachments that can carry additional structured data related to the conversation.
 
-This lawful basis extension provides a Compatible vCon extension (as defined in Section 2.5 of [I-D.draft-ietf-vcon-core-00]) that introduces lawful basis management capabilities through a standardized "lawful_basis" attachment type. The extension captures essential metadata including:
+This lawful basis extension provides a Compatible vCon extension (as defined in Section 2.5 of [I-D.draft-ietf-vcon-vcon-core]) that introduces lawful basis management capabilities through a standardized "lawful_basis" attachment type. The extension captures essential metadata including:
 
 - The specific lawful basis being asserted for processing
 - Party identification (for consent-based processing)
@@ -178,7 +170,7 @@ The lawful basis extension addresses key privacy and compliance challenges while
 
 # Conventions and Definitions
 
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all capitals, as shown here.
+{::boilerplate bcp14-tagged}
 
 ## Core Terms
 
@@ -190,7 +182,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 **Attestation Registry**: An external transparency service that maintains an authoritative, verifiable log of attestations about a vCon, which can include attestations of a lawful basis. This document defines integration with registries using the SCITT protocol.
 
-**Compatible Extension**: A vCon extension that introduces additional data without altering the meaning or structure of existing elements, as defined in [I-D.draft-ietf-vcon-core-00].
+**Compatible Extension**: A vCon extension that introduces additional data without altering the meaning or structure of existing elements, as defined in [I-D.draft-ietf-vcon-vcon-core].
 
 # Overview of Lawful Bases
 
@@ -216,11 +208,11 @@ This lawful basis extension for vCon provides a standardized way to record and v
 
 ## Extension Classification
 
-The lawful basis extension is a **Compatible Extension** as defined in Section 2.5 of [I-D.draft-ietf-vcon-core-00]. This extension:
+The lawful basis extension is a **Compatible Extension** as defined in Section 2.5 of [I-D.draft-ietf-vcon-vcon-core]. This extension:
 
 - Introduces additional lawful basis metadata without altering existing vCon semantics
 - Can be safely ignored by implementations that don't support lawful basis processing
-- Does not require listing in the `must_support` parameter
+- Does not require listing in the `critical` parameter
 - Maintains backward compatibility with existing vCon implementations
 
 ## Extension Registration
@@ -262,7 +254,7 @@ vCon instances that include lawful basis attachments SHOULD include "lawful_basi
 
 ## Attachment Container
 
-Lawful basis information MUST be included as vCon attachments using the standard attachment object structure defined in Section 4.4 of [I-D.draft-ietf-vcon-core-00].
+Lawful basis information MUST be included as vCon attachments using the standard attachment object structure defined in Section 4.4 of [I-D.draft-ietf-vcon-vcon-core].
 
 The lawful basis attachment MUST include:
 
@@ -272,7 +264,7 @@ The lawful basis attachment MUST include:
 
 The lawful basis attachment SHOULD include:
 
-- **start**: ISO 8601 timestamp when lawful basis was recorded
+- **start**: ISO 8601 timestamp [RFC3339] when lawful basis was recorded
 - **party**: Index of the party in the vCon parties array
 - **dialog**: Index of the associated dialog in the vCon dialog array
 
@@ -321,7 +313,7 @@ Supported proof types include:
 
 - **verbal_confirmation**: Lawful basis given verbally within the conversation
 - **signed_document**: External signed lawful basis form or agreement
-- **cryptographic_signature**: Digital signature using COSE standards
+- **cryptographic_signature**: Digital signature using COSE standards [COSE-ALG]
 - **external_system**: Lawful basis recorded in external system with API verification
 
 ## Example Lawful Basis Attachment
@@ -447,7 +439,7 @@ The optional `registry` field enables integration with external attestation regi
 
 When the `registry` object is present and its `type` is "scitt", the `url` field MUST:
 
-- Reference a SCITT (Supply Chain Integrity, Transparency, and Trust) Transparency Service implementing SCRAPI [I-D.draft-ietf-scitt-scrapi-05]
+- Reference a SCITT (Supply Chain Integrity, Transparency, and Trust) Transparency Service implementing SCRAPI [I-D.draft-ietf-scitt-scrapi-07]
 - Provide cryptographic receipts for state changes
 - Support status queries and updates
 - Implement appropriate access controls and privacy protections
@@ -500,7 +492,7 @@ The `vcon-core` specification provides general-purpose security mechanisms, such
 
 ## Cryptographic Protection and Forgery
 
-**Background:** Forgery is the act of creating a fake record or altering an existing one—for instance, by changing the expiration date, expanding the scope of what was agreed to, or faking the identity of the party. The ability to prove that a lawful basis is authentic and unaltered is the bedrock of any privacy compliance framework like GDPR or CCPA. A forged record is equivalent to having no lawful basis at all and carries severe legal and financial penalties. While `vcon-core` provides a `signature` field, this extension adds the necessary business rules to ensure that a signature represents a trusted, verifiable, and legally binding act.
+**Background:** Forgery is the act of creating a fake record or altering an existing one -- for instance, by changing the expiration date, expanding the scope of what was agreed to, or faking the identity of the party. The ability to prove that a lawful basis is authentic and unaltered is the bedrock of any privacy compliance framework like GDPR or CCPA. A forged record is equivalent to having no lawful basis at all and carries severe legal and financial penalties under frameworks such as GDPR [GDPR] and CCPA [CCPA]. While `vcon-core` provides a `signature` field, this extension adds the necessary business rules to ensure that a signature represents a trusted, verifiable, and legally binding act.
 
 **Requirements:** Implementations MUST prevent forgery through:
 
@@ -524,7 +516,7 @@ The `vcon-core` specification provides general-purpose security mechanisms, such
 
 **Background:** Lawful basis records are themselves sensitive personal data. It is critical that they are protected while in transit between systems. An attacker in a "man-in-the-middle" position could intercept a vCon and alter it before it reaches its destination, potentially stripping or modifying lawful basis information.
 
-**Requirements:** All lawful basis attachments MUST be integrity protected using vCon signing mechanisms as defined in [I-D.draft-ietf-vcon-core-00]. Lawful basis attachments containing sensitive information SHOULD be encrypted when transmitted outside secure environments, for instance by using TLS 1.2 or higher for all communications.
+**Requirements:** All lawful basis attachments MUST be integrity protected using vCon signing mechanisms as defined in [I-D.draft-ietf-vcon-vcon-core]. Lawful basis attachments containing sensitive information SHOULD be encrypted when transmitted outside secure environments, for instance by using TLS 1.2 or higher for all communications.
 
 ## Audit Logging
 
@@ -548,10 +540,10 @@ Lawful basis attachments MUST implement data minimization principles by:
 The lawful basis extension addresses requirements from major privacy regulations:
 
 - **GDPR Article 7**: Conditions for lawful basis including withdrawal mechanisms
-- **CCPA Section 1798.135**: Requirements for personal information processing
-- **HIPAA Privacy Rule**: Requirements for protected health information
+- **CCPA Section 1798.135** [CCPA]: Requirements for personal information processing
+- **HIPAA Privacy Rule** [HIPAA]: Requirements for protected health information
 
-Implementers MUST ensure their implementations comply with applicable regulations in their jurisdiction.
+Implementers MUST ensure their implementations comply with applicable regulations in their jurisdiction. The NIST Privacy Framework [NIST-PRIVACY] provides additional guidance for organizations implementing privacy controls.
 
 ## Data Subject Rights
 
@@ -589,7 +581,7 @@ Implementers should conduct thorough security reviews and ensure compliance with
 
 ## vCon Extensions Names Registry
 
-This document requests IANA to register the following extension in the vCon Extensions Names Registry established by [I-D.draft-ietf-vcon-core-00]:
+This document requests IANA to register the following extension in the vCon Extensions Names Registry established by [I-D.draft-ietf-vcon-vcon-core]:
 
 - **Extension Name**: lawful_basis
 - **Extension Description**: Lawful basis management for conversation participants with cryptographic proof mechanisms and regulatory compliance support
@@ -605,7 +597,7 @@ This document requests IANA to register the following parameter in the Attachmen
 - **Change Controller**: IESG
 - **Specification Document(s)**: RFC XXXX, Section 4
 
-Note: This addresses the "TODO: type or purpose" noted in Section 6.3.6 of [I-D.draft-ietf-vcon-core-00].
+Note: This addresses the "TODO: type or purpose" noted in Section 6.3.6 of [I-D.draft-ietf-vcon-vcon-core].
 
 ## Lawful Basis Attachment Type Values Registry
 
@@ -632,7 +624,7 @@ This document requests IANA to establish a new registry for lawful basis registr
 - **Type Value**: scitt
 - **Description**: A transparency service implementing the SCITT (Supply Chain Integrity, Transparency, and Trust) protocol.
 - **Change Controller**: IESG
-- **Specification Document(s)**: RFC XXXX, [I-D.draft-ietf-scitt-scrapi-05]
+- **Specification Document(s)**: RFC XXXX, [I-D.draft-ietf-scitt-scrapi-07]
 
 Registration Template:
 
