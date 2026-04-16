@@ -845,7 +845,7 @@ Table of Contents
    [CCPA]     State of California, "California Consumer Privacy Act",
               2018, <https://oag.ca.gov/privacy/ccpa>.
 
-   [COSE-ALG] IANA, "COSE Algorithms", March 2026,
+   [COSE-ALG] IANA, "COSE Algorithms", April 2026,
               <https://www.iana.org/assignments/cose/cose.xhtml>.
 
    [FIPS-180-4]
