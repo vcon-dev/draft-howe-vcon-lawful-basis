@@ -1,0 +1,833 @@
+{
+  "schema_version": "1.0.0",
+  "repo": "draft-howe-vcon-lawful-basis",
+  "repo_version": null,
+  "archetype": "ietf-draft",
+  "generated_at": "2026-04-16T15:15:44.279618+00:00",
+  "stats": {
+    "node_count": 75,
+    "edge_count": 47
+  },
+  "nodes": [
+    {
+      "id": "document:draft",
+      "type": "document",
+      "name": "draft-howe-vcon-lawful-basis",
+      "file": "draft-howe-vcon-lawful-basis.md"
+    },
+    {
+      "id": "section:introduction",
+      "type": "section",
+      "name": "Introduction",
+      "file": "draft-howe-vcon-lawful-basis.md",
+      "line": 153,
+      "level": 1
+    },
+    {
+      "id": "section:conventions-and-definitions",
+      "type": "section",
+      "name": "Conventions and Definitions",
+      "file": "draft-howe-vcon-lawful-basis.md",
+      "line": 171,
+      "level": 1
+    },
+    {
+      "id": "section:core-terms",
+      "type": "section",
+      "name": "Core Terms",
+      "file": "draft-howe-vcon-lawful-basis.md",
+      "line": 175,
+      "level": 2
+    },
+    {
+      "id": "section:overview-of-lawful-bases",
+      "type": "section",
+      "name": "Overview of Lawful Bases",
+      "file": "draft-howe-vcon-lawful-basis.md",
+      "line": 187,
+      "level": 1
+    },
+    {
+      "id": "section:vcon-lawful-basis-extension-definition",
+      "type": "section",
+      "name": "vCon Lawful Basis Extension Definition",
+      "file": "draft-howe-vcon-lawful-basis.md",
+      "line": 207,
+      "level": 1
+    },
+    {
+      "id": "section:extension-classification",
+      "type": "section",
+      "name": "Extension Classification",
+      "file": "draft-howe-vcon-lawful-basis.md",
+      "line": 209,
+      "level": 2
+    },
+    {
+      "id": "section:extension-registration",
+      "type": "section",
+      "name": "Extension Registration",
+      "file": "draft-howe-vcon-lawful-basis.md",
+      "line": 218,
+      "level": 2
+    },
+    {
+      "id": "section:extension-usage",
+      "type": "section",
+      "name": "Extension Usage",
+      "file": "draft-howe-vcon-lawful-basis.md",
+      "line": 227,
+      "level": 2
+    },
+    {
+      "id": "section:lawful-basis-attachment-structure",
+      "type": "section",
+      "name": "Lawful Basis Attachment Structure",
+      "file": "draft-howe-vcon-lawful-basis.md",
+      "line": 253,
+      "level": 1
+    },
+    {
+      "id": "section:attachment-container",
+      "type": "section",
+      "name": "Attachment Container",
+      "file": "draft-howe-vcon-lawful-basis.md",
+      "line": 255,
+      "level": 2
+    },
+    {
+      "id": "section:lawful-basis-body-structure",
+      "type": "section",
+      "name": "Lawful Basis Body Structure",
+      "file": "draft-howe-vcon-lawful-basis.md",
+      "line": 271,
+      "level": 2
+    },
+    {
+      "id": "section:required-fields",
+      "type": "section",
+      "name": "Required Fields",
+      "file": "draft-howe-vcon-lawful-basis.md",
+      "line": 275,
+      "level": 3
+    },
+    {
+      "id": "section:optional-fields",
+      "type": "section",
+      "name": "Optional Fields",
+      "file": "draft-howe-vcon-lawful-basis.md",
+      "line": 281,
+      "level": 3
+    },
+    {
+      "id": "section:purpose-grant-objects",
+      "type": "section",
+      "name": "Purpose Grant Objects",
+      "file": "draft-howe-vcon-lawful-basis.md",
+      "line": 295,
+      "level": 3
+    },
+    {
+      "id": "section:proof-mechanism-objects",
+      "type": "section",
+      "name": "Proof Mechanism Objects",
+      "file": "draft-howe-vcon-lawful-basis.md",
+      "line": 304,
+      "level": 3
+    },
+    {
+      "id": "section:example-lawful-basis-attachment",
+      "type": "section",
+      "name": "Example Lawful Basis Attachment",
+      "file": "draft-howe-vcon-lawful-basis.md",
+      "line": 319,
+      "level": 2
+    },
+    {
+      "id": "section:lawful-basis-processing-requirements",
+      "type": "section",
+      "name": "Lawful Basis Processing Requirements",
+      "file": "draft-howe-vcon-lawful-basis.md",
+      "line": 374,
+      "level": 1
+    },
+    {
+      "id": "section:content-hash-validation",
+      "type": "section",
+      "name": "Content Hash Validation",
+      "file": "draft-howe-vcon-lawful-basis.md",
+      "line": 376,
+      "level": 2
+    },
+    {
+      "id": "section:temporal-validity",
+      "type": "section",
+      "name": "Temporal Validity",
+      "file": "draft-howe-vcon-lawful-basis.md",
+      "line": 400,
+      "level": 2
+    },
+    {
+      "id": "section:reference-validation",
+      "type": "section",
+      "name": "Reference Validation",
+      "file": "draft-howe-vcon-lawful-basis.md",
+      "line": 409,
+      "level": 2
+    },
+    {
+      "id": "section:granular-permission-evaluation",
+      "type": "section",
+      "name": "Granular Permission Evaluation",
+      "file": "draft-howe-vcon-lawful-basis.md",
+      "line": 416,
+      "level": 2
+    },
+    {
+      "id": "section:proof-verification",
+      "type": "section",
+      "name": "Proof Verification",
+      "file": "draft-howe-vcon-lawful-basis.md",
+      "line": 425,
+      "level": 2
+    },
+    {
+      "id": "section:transparency-service-integration",
+      "type": "section",
+      "name": "Transparency Service Integration",
+      "file": "draft-howe-vcon-lawful-basis.md",
+      "line": 434,
+      "level": 1
+    },
+    {
+      "id": "section:registry-services",
+      "type": "section",
+      "name": "Registry Services",
+      "file": "draft-howe-vcon-lawful-basis.md",
+      "line": 436,
+      "level": 2
+    },
+    {
+      "id": "section:registry-integration-requirements",
+      "type": "section",
+      "name": "Registry Integration Requirements",
+      "file": "draft-howe-vcon-lawful-basis.md",
+      "line": 449,
+      "level": 2
+    },
+    {
+      "id": "section:privacy-considerations-for-registries",
+      "type": "section",
+      "name": "Privacy Considerations for Registries",
+      "file": "draft-howe-vcon-lawful-basis.md",
+      "line": 459,
+      "level": 2
+    },
+    {
+      "id": "section:error-handling",
+      "type": "section",
+      "name": "Error Handling",
+      "file": "draft-howe-vcon-lawful-basis.md",
+      "line": 468,
+      "level": 1
+    },
+    {
+      "id": "section:interoperability",
+      "type": "section",
+      "name": "Interoperability",
+      "file": "draft-howe-vcon-lawful-basis.md",
+      "line": 481,
+      "level": 1
+    },
+    {
+      "id": "section:security-considerations",
+      "type": "section",
+      "name": "Security Considerations",
+      "file": "draft-howe-vcon-lawful-basis.md",
+      "line": 489,
+      "level": 1
+    },
+    {
+      "id": "section:cryptographic-protection-and-forgery",
+      "type": "section",
+      "name": "Cryptographic Protection and Forgery",
+      "file": "draft-howe-vcon-lawful-basis.md",
+      "line": 493,
+      "level": 2
+    },
+    {
+      "id": "section:replay-attack-prevention",
+      "type": "section",
+      "name": "Replay Attack Prevention",
+      "file": "draft-howe-vcon-lawful-basis.md",
+      "line": 504,
+      "level": 2
+    },
+    {
+      "id": "section:secure-communication-channels",
+      "type": "section",
+      "name": "Secure Communication Channels",
+      "file": "draft-howe-vcon-lawful-basis.md",
+      "line": 515,
+      "level": 2
+    },
+    {
+      "id": "section:audit-logging",
+      "type": "section",
+      "name": "Audit Logging",
+      "file": "draft-howe-vcon-lawful-basis.md",
+      "line": 521,
+      "level": 2
+    },
+    {
+      "id": "section:privacy-and-regulatory-compliance",
+      "type": "section",
+      "name": "Privacy and Regulatory Compliance",
+      "file": "draft-howe-vcon-lawful-basis.md",
+      "line": 527,
+      "level": 1
+    },
+    {
+      "id": "section:data-minimization",
+      "type": "section",
+      "name": "Data Minimization",
+      "file": "draft-howe-vcon-lawful-basis.md",
+      "line": 529,
+      "level": 2
+    },
+    {
+      "id": "section:regulatory-alignment",
+      "type": "section",
+      "name": "Regulatory Alignment",
+      "file": "draft-howe-vcon-lawful-basis.md",
+      "line": 538,
+      "level": 2
+    },
+    {
+      "id": "section:data-subject-rights",
+      "type": "section",
+      "name": "Data Subject Rights",
+      "file": "draft-howe-vcon-lawful-basis.md",
+      "line": 548,
+      "level": 2
+    },
+    {
+      "id": "section:conclusion",
+      "type": "section",
+      "name": "Conclusion",
+      "file": "draft-howe-vcon-lawful-basis.md",
+      "line": 558,
+      "level": 1
+    },
+    {
+      "id": "section:security-and-privacy-considerations-summary",
+      "type": "section",
+      "name": "Security and Privacy Considerations Summary",
+      "file": "draft-howe-vcon-lawful-basis.md",
+      "line": 562,
+      "level": 1
+    },
+    {
+      "id": "section:iana-considerations",
+      "type": "section",
+      "name": "IANA Considerations",
+      "file": "draft-howe-vcon-lawful-basis.md",
+      "line": 580,
+      "level": 1
+    },
+    {
+      "id": "section:vcon-extensions-names-registry",
+      "type": "section",
+      "name": "vCon Extensions Names Registry",
+      "file": "draft-howe-vcon-lawful-basis.md",
+      "line": 582,
+      "level": 2
+    },
+    {
+      "id": "section:attachment-object-parameter-names-registry",
+      "type": "section",
+      "name": "Attachment Object Parameter Names Registry",
+      "file": "draft-howe-vcon-lawful-basis.md",
+      "line": 591,
+      "level": 2
+    },
+    {
+      "id": "section:lawful-basis-attachment-type-values-registry",
+      "type": "section",
+      "name": "Lawful Basis Attachment Type Values Registry",
+      "file": "draft-howe-vcon-lawful-basis.md",
+      "line": 602,
+      "level": 2
+    },
+    {
+      "id": "section:lawful-basis-registry-type-values-registry",
+      "type": "section",
+      "name": "Lawful Basis Registry Type Values Registry",
+      "file": "draft-howe-vcon-lawful-basis.md",
+      "line": 620,
+      "level": 2
+    },
+    {
+      "id": "section:lawful-basis-content-hash-algorithm-values-registry",
+      "type": "section",
+      "name": "Lawful Basis Content Hash Algorithm Values Registry",
+      "file": "draft-howe-vcon-lawful-basis.md",
+      "line": 639,
+      "level": 2
+    },
+    {
+      "id": "section:lawful-basis-content-hash-canonicalization-values-registry",
+      "type": "section",
+      "name": "Lawful Basis Content Hash Canonicalization Values Registry",
+      "file": "draft-howe-vcon-lawful-basis.md",
+      "line": 668,
+      "level": 2
+    },
+    {
+      "id": "section:acknowledgements",
+      "type": "section",
+      "name": "Acknowledgements",
+      "file": "draft-howe-vcon-lawful-basis.md",
+      "line": 687,
+      "level": 1
+    },
+    {
+      "id": "reference:rfc3339",
+      "type": "reference",
+      "name": "RFC 3339",
+      "url": "https://www.rfc-editor.org/rfc/rfc3339"
+    },
+    {
+      "id": "reference:rfc8785",
+      "type": "reference",
+      "name": "RFC 8785",
+      "url": "https://www.rfc-editor.org/rfc/rfc8785"
+    },
+    {
+      "id": "reference:rfc7693",
+      "type": "reference",
+      "name": "RFC 7693",
+      "url": "https://www.rfc-editor.org/rfc/rfc7693"
+    },
+    {
+      "id": "reference:draft-ietf-scitt-scrapi-07",
+      "type": "reference",
+      "name": "draft-ietf-scitt-scrapi-07"
+    },
+    {
+      "id": "reference:draft-ietf-scitt-scrapi",
+      "type": "reference",
+      "name": "draft-ietf-scitt-scrapi"
+    },
+    {
+      "id": "requirement:req-1",
+      "type": "requirement",
+      "name": "SHOULD: vCon instances that include lawful basis attachments SHOULD include \"lawful_basi",
+      "file": "draft-howe-vcon-lawful-basis.md",
+      "line": 229,
+      "keyword": "SHOULD"
+    },
+    {
+      "id": "requirement:req-2",
+      "type": "requirement",
+      "name": "MUST: Lawful basis information MUST be included as vCon attachments using the standard",
+      "file": "draft-howe-vcon-lawful-basis.md",
+      "line": 257,
+      "keyword": "MUST"
+    },
+    {
+      "id": "requirement:req-3",
+      "type": "requirement",
+      "name": "MUST: The lawful basis attachment MUST include:",
+      "file": "draft-howe-vcon-lawful-basis.md",
+      "line": 259,
+      "keyword": "MUST"
+    },
+    {
+      "id": "requirement:req-4",
+      "type": "requirement",
+      "name": "MUST: - **type**: MUST be set to \"lawful_basis\"",
+      "file": "draft-howe-vcon-lawful-basis.md",
+      "line": 261,
+      "keyword": "MUST"
+    },
+    {
+      "id": "requirement:req-5",
+      "type": "requirement",
+      "name": "MUST: - **encoding**: MUST be set to \"json\" for structured lawful basis data",
+      "file": "draft-howe-vcon-lawful-basis.md",
+      "line": 262,
+      "keyword": "MUST"
+    },
+    {
+      "id": "requirement:req-6",
+      "type": "requirement",
+      "name": "MUST: - **body**: MUST contain the lawful basis data structure as defined below",
+      "file": "draft-howe-vcon-lawful-basis.md",
+      "line": 263,
+      "keyword": "MUST"
+    },
+    {
+      "id": "requirement:req-7",
+      "type": "requirement",
+      "name": "SHOULD: The lawful basis attachment SHOULD include:",
+      "file": "draft-howe-vcon-lawful-basis.md",
+      "line": 265,
+      "keyword": "SHOULD"
+    },
+    {
+      "id": "requirement:req-8",
+      "type": "requirement",
+      "name": "MUST: The `body` field of the lawful basis attachment MUST contain a JSON object with ",
+      "file": "draft-howe-vcon-lawful-basis.md",
+      "line": 273,
+      "keyword": "MUST"
+    },
+    {
+      "id": "requirement:req-9",
+      "type": "requirement",
+      "name": "MUST: Each object in the `purpose_grants` array MUST contain:",
+      "file": "draft-howe-vcon-lawful-basis.md",
+      "line": 297,
+      "keyword": "MUST"
+    },
+    {
+      "id": "requirement:req-10",
+      "type": "requirement",
+      "name": "MUST: Each object in the `proof_mechanisms` array MUST contain:",
+      "file": "draft-howe-vcon-lawful-basis.md",
+      "line": 306,
+      "keyword": "MUST"
+    },
+    {
+      "id": "requirement:req-11",
+      "type": "requirement",
+      "name": "MUST: Implementations MUST validate content hashes when present in lawful basis attach",
+      "file": "draft-howe-vcon-lawful-basis.md",
+      "line": 378,
+      "keyword": "MUST"
+    },
+    {
+      "id": "requirement:req-12",
+      "type": "requirement",
+      "name": "MUST: Implementations MUST validate lawful basis expiration before processing:",
+      "file": "draft-howe-vcon-lawful-basis.md",
+      "line": 402,
+      "keyword": "MUST"
+    },
+    {
+      "id": "requirement:req-13",
+      "type": "requirement",
+      "name": "MUST: Implementations MUST validate attachment references:",
+      "file": "draft-howe-vcon-lawful-basis.md",
+      "line": 411,
+      "keyword": "MUST"
+    },
+    {
+      "id": "requirement:req-14",
+      "type": "requirement",
+      "name": "MUST: When processing vCon content, implementations MUST:",
+      "file": "draft-howe-vcon-lawful-basis.md",
+      "line": 418,
+      "keyword": "MUST"
+    },
+    {
+      "id": "requirement:req-15",
+      "type": "requirement",
+      "name": "SHOULD: Implementations SHOULD verify proof mechanisms when present:",
+      "file": "draft-howe-vcon-lawful-basis.md",
+      "line": 427,
+      "keyword": "SHOULD"
+    },
+    {
+      "id": "requirement:req-16",
+      "type": "requirement",
+      "name": "MUST: When the `registry` object is present and its `type` is \"scitt\", the `url` field",
+      "file": "draft-howe-vcon-lawful-basis.md",
+      "line": 440,
+      "keyword": "MUST"
+    },
+    {
+      "id": "requirement:req-17",
+      "type": "requirement",
+      "name": "MUST: Implementations that support registries MUST:",
+      "file": "draft-howe-vcon-lawful-basis.md",
+      "line": 451,
+      "keyword": "MUST"
+    },
+    {
+      "id": "requirement:req-18",
+      "type": "requirement",
+      "name": "SHOULD: Registry services SHOULD:",
+      "file": "draft-howe-vcon-lawful-basis.md",
+      "line": 461,
+      "keyword": "SHOULD"
+    },
+    {
+      "id": "requirement:req-19",
+      "type": "requirement",
+      "name": "SHOULD: Implementations SHOULD provide specific error reporting:",
+      "file": "draft-howe-vcon-lawful-basis.md",
+      "line": 470,
+      "keyword": "SHOULD"
+    },
+    {
+      "id": "requirement:req-20",
+      "type": "requirement",
+      "name": "MUST: **Requirements:** Implementations MUST prevent forgery through:",
+      "file": "draft-howe-vcon-lawful-basis.md",
+      "line": 497,
+      "keyword": "MUST"
+    },
+    {
+      "id": "document:CONTRIBUTING",
+      "type": "document",
+      "name": "CONTRIBUTING",
+      "file": "CONTRIBUTING.md"
+    },
+    {
+      "id": "document:readme",
+      "type": "document",
+      "name": "README",
+      "file": "README.md"
+    }
+  ],
+  "edges": [
+    {
+      "from": "document:draft",
+      "to": "section:introduction",
+      "type": "contains"
+    },
+    {
+      "from": "document:draft",
+      "to": "section:conventions-and-definitions",
+      "type": "contains"
+    },
+    {
+      "from": "document:draft",
+      "to": "section:core-terms",
+      "type": "contains"
+    },
+    {
+      "from": "document:draft",
+      "to": "section:overview-of-lawful-bases",
+      "type": "contains"
+    },
+    {
+      "from": "document:draft",
+      "to": "section:vcon-lawful-basis-extension-definition",
+      "type": "contains"
+    },
+    {
+      "from": "document:draft",
+      "to": "section:extension-classification",
+      "type": "contains"
+    },
+    {
+      "from": "document:draft",
+      "to": "section:extension-registration",
+      "type": "contains"
+    },
+    {
+      "from": "document:draft",
+      "to": "section:extension-usage",
+      "type": "contains"
+    },
+    {
+      "from": "document:draft",
+      "to": "section:lawful-basis-attachment-structure",
+      "type": "contains"
+    },
+    {
+      "from": "document:draft",
+      "to": "section:attachment-container",
+      "type": "contains"
+    },
+    {
+      "from": "document:draft",
+      "to": "section:lawful-basis-body-structure",
+      "type": "contains"
+    },
+    {
+      "from": "document:draft",
+      "to": "section:required-fields",
+      "type": "contains"
+    },
+    {
+      "from": "document:draft",
+      "to": "section:optional-fields",
+      "type": "contains"
+    },
+    {
+      "from": "document:draft",
+      "to": "section:purpose-grant-objects",
+      "type": "contains"
+    },
+    {
+      "from": "document:draft",
+      "to": "section:proof-mechanism-objects",
+      "type": "contains"
+    },
+    {
+      "from": "document:draft",
+      "to": "section:example-lawful-basis-attachment",
+      "type": "contains"
+    },
+    {
+      "from": "document:draft",
+      "to": "section:lawful-basis-processing-requirements",
+      "type": "contains"
+    },
+    {
+      "from": "document:draft",
+      "to": "section:content-hash-validation",
+      "type": "contains"
+    },
+    {
+      "from": "document:draft",
+      "to": "section:temporal-validity",
+      "type": "contains"
+    },
+    {
+      "from": "document:draft",
+      "to": "section:reference-validation",
+      "type": "contains"
+    },
+    {
+      "from": "document:draft",
+      "to": "section:granular-permission-evaluation",
+      "type": "contains"
+    },
+    {
+      "from": "document:draft",
+      "to": "section:proof-verification",
+      "type": "contains"
+    },
+    {
+      "from": "document:draft",
+      "to": "section:transparency-service-integration",
+      "type": "contains"
+    },
+    {
+      "from": "document:draft",
+      "to": "section:registry-services",
+      "type": "contains"
+    },
+    {
+      "from": "document:draft",
+      "to": "section:registry-integration-requirements",
+      "type": "contains"
+    },
+    {
+      "from": "document:draft",
+      "to": "section:privacy-considerations-for-registries",
+      "type": "contains"
+    },
+    {
+      "from": "document:draft",
+      "to": "section:error-handling",
+      "type": "contains"
+    },
+    {
+      "from": "document:draft",
+      "to": "section:interoperability",
+      "type": "contains"
+    },
+    {
+      "from": "document:draft",
+      "to": "section:security-considerations",
+      "type": "contains"
+    },
+    {
+      "from": "document:draft",
+      "to": "section:cryptographic-protection-and-forgery",
+      "type": "contains"
+    },
+    {
+      "from": "document:draft",
+      "to": "section:replay-attack-prevention",
+      "type": "contains"
+    },
+    {
+      "from": "document:draft",
+      "to": "section:secure-communication-channels",
+      "type": "contains"
+    },
+    {
+      "from": "document:draft",
+      "to": "section:audit-logging",
+      "type": "contains"
+    },
+    {
+      "from": "document:draft",
+      "to": "section:privacy-and-regulatory-compliance",
+      "type": "contains"
+    },
+    {
+      "from": "document:draft",
+      "to": "section:data-minimization",
+      "type": "contains"
+    },
+    {
+      "from": "document:draft",
+      "to": "section:regulatory-alignment",
+      "type": "contains"
+    },
+    {
+      "from": "document:draft",
+      "to": "section:data-subject-rights",
+      "type": "contains"
+    },
+    {
+      "from": "document:draft",
+      "to": "section:conclusion",
+      "type": "contains"
+    },
+    {
+      "from": "document:draft",
+      "to": "section:security-and-privacy-considerations-summary",
+      "type": "contains"
+    },
+    {
+      "from": "document:draft",
+      "to": "section:iana-considerations",
+      "type": "contains"
+    },
+    {
+      "from": "document:draft",
+      "to": "section:vcon-extensions-names-registry",
+      "type": "contains"
+    },
+    {
+      "from": "document:draft",
+      "to": "section:attachment-object-parameter-names-registry",
+      "type": "contains"
+    },
+    {
+      "from": "document:draft",
+      "to": "section:lawful-basis-attachment-type-values-registry",
+      "type": "contains"
+    },
+    {
+      "from": "document:draft",
+      "to": "section:lawful-basis-registry-type-values-registry",
+      "type": "contains"
+    },
+    {
+      "from": "document:draft",
+      "to": "section:lawful-basis-content-hash-algorithm-values-registry",
+      "type": "contains"
+    },
+    {
+      "from": "document:draft",
+      "to": "section:lawful-basis-content-hash-canonicalization-values-registry",
+      "type": "contains"
+    },
+    {
+      "from": "document:draft",
+      "to": "section:acknowledgements",
+      "type": "contains"
+    }
+  ],
+  "subsystems": []
+}
