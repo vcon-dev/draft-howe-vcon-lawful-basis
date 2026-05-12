@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-05-10T01:52:03.309545+00:00",
+  "timestamp": "2026-05-12T01:57:47.385890+00:00",
   "repo": "vcon-dev/draft-howe-vcon-lawful-basis",
   "labels": [
     {
@@ -49,7 +49,56 @@
       "color": "ffffff"
     }
   ],
-  "issues": [],
+  "issues": [
+    {
+      "number": 2,
+      "id": "I_kwDOPPvOis8AAAABBz2Vbg",
+      "title": "Attachment field should be `purpose`, not `type`, to match vcon-core-02",
+      "url": "https://github.com/vcon-dev/draft-howe-vcon-lawful-basis/issues/2",
+      "state": "OPEN",
+      "author": "howethomas",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "## Summary\n\nThe draft (`-01`) specifies that the lawful basis attachment uses a top-level `type: \"lawful_basis\"` field, but `draft-ietf-vcon-vcon-core-02` defines the attachment-purpose field as `purpose`, not `type`. There is no `type` parameter on the core Attachment Object.\n\n## Where in the draft\n\n- \u00a7Attachment Container: *\"type: MUST be set to 'lawful_basis'\"*\n- \u00a7Example Lawful Basis Attachment: `\"type\": \"lawful_basis\"` (~line 323)\n- \u00a7Extension Usage example: `\"type\": \"lawful_basis\"` (~line 240)\n- IANA \u00a7Attachment Object Parameter Names Registry requests registration of `type` and notes: *\"This addresses the 'TODO: type or purpose' noted in Section 6.3.6 of [I-D.draft-ietf-vcon-vcon-core].\"*\n\n## Why it's a problem\n\nvcon-core has since resolved that TODO. `draft-ietf-vcon-vcon-core-02` \u00a7Attachment Object defines only `purpose` (see \u00a7attachment-purpose); it does not define `type`. Implementations following core will look at `purpose` and skip lawful-basis attachments emitted per this draft. The `vcon-dev/vcon-speckit` and `VCON_USAGE_GUIDE.md` examples already use `purpose: \"lawful_basis\"`.\n\n## Suggested fix\n\n1. Change `type` \u2192 `purpose` throughout \u00a7Attachment Container, \u00a7Extension Usage, and the example block.\n2. Drop the IANA registration of `type` as a new Attachment Object parameter name.\n3. Optionally add an interop note that consumers MAY also accept legacy `type: \"lawful_basis\"`.",
+      "createdAt": "2026-05-10T18:23:12Z",
+      "updatedAt": "2026-05-10T18:23:12Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 3,
+      "id": "I_kwDOPPvOis8AAAABBz2YrQ",
+      "title": "Example `body` is shown as inline JSON object but `encoding: \"json\"` requires a string",
+      "url": "https://github.com/vcon-dev/draft-howe-vcon-lawful-basis/issues/3",
+      "state": "OPEN",
+      "author": "howethomas",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "## Summary\n\n\u00a7Example Lawful Basis Attachment shows `body` as an inline JSON object, but the same example sets `encoding: \"json\"`. Per `draft-ietf-vcon-vcon-core-02` \u00a7Attachment Object and the Inline Files convention, attachment `body` is a string and `encoding: \"json\"` means the string is JSON-encoded \u2014 not that `body` is a parsed JSON value.\n\n## Where in the draft\n\n- \u00a7Extension Usage example (~line 245): `\"body\": { ... }` with `\"encoding\": \"json\"`\n- \u00a7Example Lawful Basis Attachment (~line 328): same pattern\n- \u00a7Lawful Basis Body Structure: *\"body: MUST contain the lawful basis data structure as defined below\"* \u2014 wording is ambiguous between \"the string contains the encoded structure\" and \"body is the structure.\"\n\n## Why it's a problem\n\nSpec-strict consumers will fail to decode the body (type mismatch: dict vs. string). Healthcare and contact-center examples in `vcon-dev/vcon-speckit/VCON_USAGE_GUIDE.md` correctly emit `body` as a JSON-encoded string (e.g. `\"body\": \"{\\\"lawful_basis\\\": ...}\"`), so the draft's example is the outlier.\n\n## Suggested fix\n\n1. Update the two examples so `body` is a JSON-encoded string with proper escaping (or a multi-line string with appropriate JSON formatting).\n2. Clarify \u00a7Lawful Basis Body Structure: *\"The `body` field MUST be a string containing a JSON-encoded object with the following structure, paired with `encoding: 'json'`.\"*\n3. Optionally add a non-normative note showing the decoded structure separately for readability.",
+      "createdAt": "2026-05-10T18:23:31Z",
+      "updatedAt": "2026-05-10T18:23:31Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 4,
+      "id": "I_kwDOPPvOis8AAAABBz2lwA",
+      "title": "`party` and `dialog` should be REQUIRED, not SHOULD, to align with vcon-core-02",
+      "url": "https://github.com/vcon-dev/draft-howe-vcon-lawful-basis/issues/4",
+      "state": "OPEN",
+      "author": "howethomas",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "## Summary\n\n\u00a7Attachment Container lists `party` and `dialog` as SHOULD-include fields. `draft-ietf-vcon-vcon-core-02` makes both REQUIRED on every Attachment Object. The lawful-basis draft is laxer than core, which leaves a strict-core implementation in an awkward position when consuming attachments emitted per this draft.\n\n## Where in the draft\n\n\u00a7Attachment Container:\n> *\"The lawful basis attachment SHOULD include: start, party, dialog\"*\n\n## Why it's a problem\n\nA strict vcon-core consumer will reject attachments missing `party` or `dialog`. Implementations following this draft's permissive language can produce non-portable artifacts. The conventional vCon-level placement (`party: 0, dialog: 0`) costs nothing to require and matches the speckit's guidance.\n\n## Suggested fix\n\n1. Promote `party` and `dialog` from SHOULD to MUST.\n2. Add a sentence: *\"For lawful-basis records that apply to the entire vCon rather than a specific dialog or party, set `party: 0` and `dialog: 0`.\"*\n3. Keep `start` as SHOULD (it's not required by core).",
+      "createdAt": "2026-05-10T18:24:52Z",
+      "updatedAt": "2026-05-10T18:24:52Z",
+      "closedAt": null,
+      "comments": []
+    }
+  ],
   "pulls": [
     {
       "number": 1,
