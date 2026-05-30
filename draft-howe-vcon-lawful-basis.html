@@ -8,25 +8,25 @@
 <meta content="Thomas McCarthy-Howe" name="author">
 <meta content='
        This document defines a lawful basis extension for Virtualized Conversations (vCon) that provides standardized mechanisms for recording, verifying, and managing the lawful basis for processing data within conversation containers. The lawful basis extension addresses privacy compliance challenges through structured attachment metadata, including the specific lawful basis being asserted, temporal validity periods where applicable, and cryptographic proof mechanisms. 
-       The extension is designed as a Compatible vCon extension that introduces lawful basis management capabilities without altering existing vCon semantics. It defines a "lawful_basis" attachment type with structured records for each of the six lawful bases defined in regulations like GDPR, including consent, contract, legal obligation, vital interests, public task, and legitimate interests. 
+       The extension is designed as a Compatible vCon extension that introduces lawful basis management capabilities without altering existing vCon semantics. It defines a "lawful_basis" attachment (identified by the attachment "purpose" value "lawful_basis") with structured records for each of the six lawful bases defined in regulations like GDPR, including consent, contract, legal obligation, vital interests, public task, and legitimate interests. 
        Key features include automated lawful basis detection during conversation processing, auditable records with cryptographic proofs, granular purpose-based permissions for all lawful bases, documented justifications for other lawful bases, and integration with privacy regulations including GDPR, CCPA, and HIPAA. 
     ' name="description">
-<meta content="xml2rfc 3.32.0" name="generator">
+<meta content="xml2rfc 3.33.0" name="generator">
 <meta content="Internet-Draft" name="keyword">
-<meta content="draft-howe-vcon-lawful-basis-01" name="ietf.draft">
+<meta content="draft-howe-vcon-lawful-basis-02" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.32.0
-    Python 3.12.12
+  xml2rfc 3.33.0
+    Python 3.12.13
     ConfigArgParse 1.7
     google-i18n-address 3.1.1
     intervaltree 3.2.1
     Jinja2 3.1.6
     lxml 6.0.2
-    platformdirs 4.9.4
+    platformdirs 4.9.6
     pycountry 24.6.1
     PyYAML 6.0.3
-    requests 2.32.5
-    wcwidth 0.6.0
+    requests 2.33.1
+    wcwidth 0.7.0
 -->
 <link href="draft-howe-vcon-lawful-basis.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -293,16 +293,19 @@ h1, h2, h3, h4, h5, h6 {
   font-size-adjust: 0.5;
   color: var(--title-color);
 }
-h1#title {
-  font-size: 32px;
-  line-height: 40px;
-  clear: both;
-}
-h1#title, h1#rfcnum {
-  margin: 1.5em 0 0.2em;
-}
-h1#rfcnum + h1#title {
-  margin: 0.2em 0;
+h1 {
+  &#title {
+    font-size: 32px;
+    line-height: 40px;
+    clear: both;
+    margin: 1.5em 0 0.2em;
+  }
+  &#rfcnum {
+    margin: 1.5em 0 0.2em;
+    & + h1#title {
+      margin: 0.2em 0;
+    }
+  }
 }
 
 h1, h2, h3 {
@@ -322,10 +325,10 @@ h4, h5, h6 {
 #abstract+p {
   font-size: 18px;
   line-height: 24px;
-}
-#abstract+p code, #abstract+p samp, #abstract+p tt {
-  font-size: 16px;
-  line-height: 0;
+  & code, & samp, & tt {
+    font-size: 16px;
+    line-height: 0;
+  }
 }
 
 p {
@@ -336,59 +339,59 @@ p {
 div {
   margin: 0;
 }
-.alignRight.art-text {
-  background-color: var(--highlight-color);
-  border: 1px solid var(--line-color);
-  border-radius: 3px;
-  padding: 0.5em 1em 0;
-  margin-bottom: 0.5em;
-}
-.alignRight.art-text pre {
-  padding: 0;
-  width: auto;
-}
 .alignRight {
   margin: 1em 0;
-}
-.alignRight > *:first-child {
-  border: none;
-  margin: 0;
-  float: right;
-  clear: both;
-}
-.alignRight > *:nth-child(2) {
-  clear: both;
-  display: block;
-  border: none;
+  &.art-text {
+    background-color: var(--highlight-color);
+    border: 1px solid var(--line-color);
+    border-radius: 3px;
+    padding: 0.5em 1em 0;
+    margin-bottom: 0.5em;
+    & pre {
+      padding: 0;
+      width: auto;
+    }
+  }
+  & > *:first-child {
+    border: none;
+    margin: 0;
+    float: right;
+    clear: both;
+  }
+  & > *:nth-child(2) {
+    clear: both;
+    display: block;
+    border: none;
+  }
 }
 svg {
   display: block;
-}
-/* font-family isn't space-separated, but =~ will have to do */
-svg[font-family~="monospace" i], svg [font-family~="monospace" i] {
-  font-family: var(--font-mono);
-}
-.alignCenter.art-text {
-  background-color: var(--highlight-color);
-  border: 1px solid var(--line-color);
-  border-radius: 3px;
-  padding: 0.5em 1em 0;
-  margin-bottom: 0.5em;
-}
-.alignCenter.art-text pre {
-  padding: 0;
-  width: auto;
+  /* font-family isn't space-separated, but =~ will have to do */
+  &[font-family~="monospace" i], & [font-family~="monospace" i] {
+    font-family: var(--font-mono);
+  }
 }
 .alignCenter {
   margin: 1em 0;
-}
-.alignCenter > *:first-child {
-  border: none;
-  /* this isn't optimal, but it's an existence proof.  PrinceXML doesn't
-     support flexbox yet.
-  */
-  display: table;
-  margin: 0 auto;
+  &.art-text {
+    background-color: var(--highlight-color);
+    border: 1px solid var(--line-color);
+    border-radius: 3px;
+    padding: 0.5em 1em 0;
+    margin-bottom: 0.5em;
+    & pre {
+      padding: 0;
+      width: auto;
+    }
+  }
+  & > *:first-child {
+    border: none;
+    /* this isn't optimal, but it's an existence proof.  PrinceXML doesn't
+       support flexbox yet.
+    */
+    display: table;
+    margin: 0 auto;
+  }
 }
 
 /* lists */
@@ -426,26 +429,25 @@ dl {
     --indent: 5ch;
     & > dt {
       min-width: calc(var(--indent) - 2ch);
+      float: none;
     }
-  }
-  &.olPercent > dt {
-    float: none;
   }
 
   dl > dd > & {
     margin-top: 0.5em;
     margin-bottom: 0;
   }
-}
-dl:not(.dlNewline) > dt {
-  float: left;
-  margin-right: 2ch;
-  min-width: 8ch;
-}
-dl > dd {
-  margin-bottom: .8em;
-  margin-left: var(--indent) !important; /* stupid element overrides */
-  min-height: 2ex;
+
+  &:not(.dlNewline) > dt {
+    float: left;
+    margin-right: 2ch;
+    min-width: 8ch;
+  }
+  & > dd {
+    margin-bottom: .8em;
+    margin-left: var(--indent) !important; /* stupid element overrides */
+    min-height: 2ex;
+  }
 }
 :is(dl.compact, .dlCompact) > dd {
   margin-bottom: 0;
@@ -461,20 +463,22 @@ dl > dd {
 }
 
 /* links */
-a, a[href].selfRef:hover {
+a {
   text-decoration: none;
+  &[href] {
+    color: var(--link-color);
+    &:hover { text-decoration: underline; }
+    &.selfRef {
+      color: var(--text-color);
+      &:hover {
+        text-decoration: none;
+        background-color: var(--highlight-color);
+      }
+    }
+  }
 }
-a[href] {
-  color: var(--link-color);
-}
-a[href].selfRef, .iref + a[href].internal {
+.iref + a[href].internal {
   color: var(--text-color);
-}
-a[href]:hover {
-  text-decoration: underline;
-}
-a[href].selfRef:hover {
-  background-color: var(--highlight-color);
 }
 a.xref:is(.cite, .auto), :is(#status-of-memo, #copyright) a {
   white-space: nowrap;
@@ -510,9 +514,9 @@ img {
 figure {
   margin: 0.5em 0;
   padding: 0;
-}
-figure blockquote {
-  margin: 0.8em 0.4em 0.4em;
+  & blockquote {
+    margin: 0.8em 0.4em 0.4em;
+  }
 }
 figcaption, caption {
   font-style: italic;
@@ -522,17 +526,19 @@ figcaption, caption {
 }
 @media screen {
   /* Auto-collapse boilerplate. */
-  :is(#status-of-memo, #copyright) p {
-    margin: -2px 0;
-    max-height: 0;
-    transition: max-height 2s ease, margin 0.5s ease 0.5s;
-    overflow: hidden;
-  }
-  :is(#status-of-memo, #copyright):hover p,
-  :is(#status-of-memo, #copyright) h2:target ~ p {
-    margin: 0.5em 0;
-    max-height: 500px;
-    overflow: auto;
+  :is(#status-of-memo, #copyright) {
+    & p {
+      margin: -2px 0;
+      max-height: 0;
+      transition: max-height 2s ease, margin 0.5s ease 0.5s;
+      overflow: hidden;
+    }
+    &:hover p,
+    & h2:target ~ p {
+      margin: 0.5em 0;
+      max-height: 500px;
+      overflow: auto;
+    }
   }
   pre, svg {
     display: inline-block;
@@ -582,25 +588,17 @@ table {
   max-width: 100%;
   margin: 0 0 1em;
   border-collapse: collapse;
-}
-table.right {
-  margin-left: auto;
-}
-table.center {
-  margin-left: auto;
-  margin-right: auto;
-}
-table.left {
-  margin-right: auto;
-}
-table .text-left {
-  text-align: left;
-}
-table .text-center {
-  text-align: center;
-}
-table .text-right {
-  text-align: right;
+  &.right { margin-left: auto; }
+  &.center { margin-left: auto; margin-right: auto; }
+  &.left { margin-right: auto; }
+  & .text-left { text-align: left; }
+  & .text-center { text-align: center; }
+  & .text-right { text-align: right; }
+  & caption {
+    margin: 0;
+    padding: 3px 0 3px 1em;
+  }
+  & p { margin: 0; }
 }
 
 thead, tbody {
@@ -620,13 +618,6 @@ th {
 :is(tr:nth-child(2n+1), thead+tbody > tr:nth-child(2n)) > td {
   background-color: var(--highlight-color);
 }
-table caption {
-  margin: 0;
-  padding: 3px 0 3px 1em;
-}
-table p {
-  margin: 0;
-}
 
 /* pilcrow */
 a.pilcrow {
@@ -637,18 +628,16 @@ a.pilcrow {
     color: var(--pilcrow-weak);
     &:hover { text-decoration: none; }
   }
-}
-@media not print {
-  :hover > a.pilcrow, a.pilcrow:focus {
-    opacity: 1;
+  @media not print {
+    :hover > &, &:focus {
+      opacity: 1;
+    }
+    &[href]:hover {
+      color: var(--pilcrow-strong);
+      background-color: transparent;
+    }
   }
-  a.pilcrow[href]:hover {
-    color: var(--pilcrow-strong);
-    background-color: transparent;
-  }
-}
-@media print {
-  a.pilcrow {
+  @media print {
     display: none;
   }
 }
@@ -707,9 +696,9 @@ sub, sup {
   font-size: 0.9em;
   font-style: italic;
   margin-top: 2em;
-}
-.docInfo .prepared {
-  float: right;
+  & .prepared {
+    float: right;
+  }
 }
 
 /* table of contents */
@@ -799,23 +788,27 @@ hr.addr {
   max-width: calc(100% - 16px);
 }
 @media (min-width: 500px) {
-  #authors-addresses > section {
-    column-count: 2;
-    column-gap: 20px;
-  }
-  #authors-addresses > section > h2 {
-    column-span: all;
-  }
-  /* hack for break-inside: avoid-column */
-  #authors-addresses address {
-    display: inline-block;
-    break-inside: avoid-column;
+  #authors-addresses {
+    & > section {
+      column-count: 2;
+      column-gap: 20px;
+    }
+    & > section > h2 {
+      column-span: all;
+    }
+    /* hack for break-inside: avoid-column */
+    & address {
+      display: inline-block;
+      break-inside: avoid-column;
+    }
   }
 }
 
 /* Comments */
-.rfcEditorRemove p:first-of-type {
-  font-style: italic;
+.rfcEditorRemove {
+  & p:first-of-type {
+    font-style: italic;
+  }
 }
 .cref {
   background-color: rgba(249, 232, 105, 0.3);
@@ -826,19 +819,21 @@ hr.addr {
 }
 
 @media screen {
-  #toc nav {
-    font-family: var(--font-title);
-    font-weight: 360;
-    & > ul { margin-bottom: 2em; }
-    & ul {
-      margin: 0 0 0 4px;
-      & :is(p, li) {
-        margin: 2px 0;
+  #toc {
+    & nav {
+      font-family: var(--font-title);
+      font-weight: 360;
+      & > ul { margin-bottom: 2em; }
+      & ul {
+        margin: 0 0 0 4px;
+        & :is(p, li) {
+          margin: 2px 0;
+        }
       }
     }
-  }
-  #toc a.toplink {
-    float: right;
+    & a.toplink {
+      float: right;
+    }
   }
 }
 @media not screen {
@@ -859,54 +854,54 @@ hr.addr {
     margin: 0;
     border-bottom: 1px solid #ccc;
     opacity: 0.6;
-  }
-  #toc h2 {
-    margin: 0;
-    padding: 2px 0 2px 6px;
-    padding-right: 1em;
-    font-size: 18px;
-    line-height: 24px;
-    min-width: 190px;
-    text-align: right;
-    background-color: #444;
-    color: white;
-    cursor: pointer;
-    &::before { /* css hamburger */
-      float: right;
-      position: relative;
-      width: 1em;
-      height: 1px;
-      left: -164px;
-      margin: 8px 0 0 0;
-      background: white none repeat scroll 0 0;
-      box-shadow: 0 4px 0 0 white, 0 8px 0 0 white;
-      content: "";
+    & h2 {
+      margin: 0;
+      padding: 2px 0 2px 6px;
+      padding-right: 1em;
+      font-size: 18px;
+      line-height: 24px;
+      min-width: 190px;
+      text-align: right;
+      background-color: #444;
+      color: white;
+      cursor: pointer;
+      &::before { /* css hamburger */
+        float: right;
+        position: relative;
+        width: 1em;
+        height: 1px;
+        left: -164px;
+        margin: 8px 0 0 0;
+        background: white none repeat scroll 0 0;
+        box-shadow: 0 4px 0 0 white, 0 8px 0 0 white;
+        content: "";
+      }
     }
-  }
-  #toc nav {
-    display: none;
-    background-color: var(--background-color);
-    padding: 0.5em 1em 1em;
-    overflow: auto;
-    overscroll-behavior: contain;
-    height: calc(100vh - 48px);
-    border-left: 1px solid #ddd;
-  }
-  #toc.active {
-    opacity: 1;
-    & nav { display: block; }
-  }
-  /* Make the collapsed ToC header render white on gray also when it's a link */
-  #toc h2 a,
-  #toc h2 a:is(:link, :focus, :hover),
-  #toc a.toplink,
-  #toc a.toplink:hover {
-    color: white;
-    background-color: #444;
-    text-decoration: none;
-  }
-  #toc a.toplink {
-    margin: 2px 0.5em 0;
+    & nav {
+      display: none;
+      background-color: var(--background-color);
+      padding: 0.5em 1em 1em;
+      overflow: auto;
+      overscroll-behavior: contain;
+      height: calc(100vh - 48px);
+      border-left: 1px solid #ddd;
+    }
+    &.active {
+      opacity: 1;
+      & nav { display: block; }
+    }
+    /* Make the collapsed ToC header render white on gray also when it's a link */
+    & h2 a,
+    & h2 a:is(:link, :focus, :hover),
+    & a.toplink,
+    & a.toplink:hover {
+      color: white;
+      background-color: #444;
+      text-decoration: none;
+    }
+    & a.toplink {
+      margin: 2px 0.5em 0;
+    }
   }
 }
 
@@ -925,26 +920,26 @@ hr.addr {
     margin: 0;
     padding: 0;
     z-index: 1;
-  }
-  #toc h2 {
-    margin: 0;
-    padding: 0.25em 1em 1em 0;
-  }
-  #toc nav {
-    display: block;
-    height: calc(90vh - 84px);
-    bottom: 0;
-    padding: 0.5em 0 2em;
-    overflow: auto;
-    overscroll-behavior: contain;
-    scrollbar-width: thin;
+    & h2 {
+      margin: 0;
+      padding: 0.25em 1em 1em 0;
+    }
+    & nav {
+      display: block;
+      height: calc(90vh - 84px);
+      bottom: 0;
+      padding: 0.5em 0 2em;
+      overflow: auto;
+      overscroll-behavior: contain;
+      scrollbar-width: thin;
+    }
+    & a.toplink {
+      margin: 8px 0.5em 0;
+    }
   }
   img { /* future proofing */
     max-width: 100%;
     height: auto;
-  }
-  #toc a.toplink {
-    margin: 8px 0.5em 0;
   }
 }
 
@@ -960,12 +955,13 @@ hr.addr {
   #n-copyright-notice {
     border-bottom: none;
   }
-  #toc, #n-introduction {
-    page-break-before: always;
-  }
   #toc {
+    page-break-before: always;
     border-top: none;
     padding-top: 0;
+  }
+  #n-introduction {
+    page-break-before: always;
   }
   figure, pre, .vcard {
     page-break-inside: avoid;
@@ -1027,17 +1023,19 @@ hr.addr {
 }
 
 /* SVG Trick: a prefix match works because only black and white are allowed */
-svg :is([stroke="black"], [stroke^="#000"]) {
-  stroke: var(--text-color);
-}
-svg :is([stroke="white"], [stroke^="#fff"]) {
-  stroke: var(--background-color);
-}
-svg :is([fill="black"], [fill^="#000"], :not([fill])) {
-  fill: var(--text-color);
-}
-svg :is([fill="white"], [fill^="#fff"]) {
-  fill: var(--background-color);
+svg {
+  & :is([stroke="black"], [stroke^="#000"]) {
+    stroke: var(--text-color);
+  }
+  & :is([stroke="white"], [stroke^="#fff"]) {
+    stroke: var(--background-color);
+  }
+  & :is([fill="black"], [fill^="#000"], :not([fill])) {
+    fill: var(--text-color);
+  }
+  & :is([fill="white"], [fill^="#fff"]) {
+    fill: var(--background-color);
+  }
 }
 </style>
 
@@ -1047,11 +1045,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">vCon Lawful Basis</td>
-<td class="right">March 2026</td>
+<td class="right">May 2026</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">McCarthy-Howe</td>
-<td class="center">Expires 3 September 2026</td>
+<td class="center">Expires 1 December 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1061,15 +1059,15 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dt class="label-workgroup">Workgroup:</dt>
 <dd class="workgroup">vCon</dd>
 <dt class="label-internet-draft">Internet-Draft:</dt>
-<dd class="internet-draft">draft-howe-vcon-lawful-basis-01</dd>
+<dd class="internet-draft">draft-howe-vcon-lawful-basis-02</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-03-02" class="published">2 March 2026</time>
+<time datetime="2026-05-30" class="published">30 May 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-09-03">3 September 2026</time></dd>
+<dd class="expires"><time datetime="2026-12-01">1 December 2026</time></dd>
 <dt class="label-authors">Author:</dt>
 <dd class="authors">
 <div class="author">
@@ -1083,7 +1081,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <section id="section-abstract">
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
 <p id="section-abstract-1">This document defines a lawful basis extension for Virtualized Conversations (vCon) that provides standardized mechanisms for recording, verifying, and managing the lawful basis for processing data within conversation containers. The lawful basis extension addresses privacy compliance challenges through structured attachment metadata, including the specific lawful basis being asserted, temporal validity periods where applicable, and cryptographic proof mechanisms.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
-<p id="section-abstract-2">The extension is designed as a Compatible vCon extension that introduces lawful basis management capabilities without altering existing vCon semantics. It defines a "lawful_basis" attachment type with structured records for each of the six lawful bases defined in regulations like GDPR, including consent, contract, legal obligation, vital interests, public task, and legitimate interests.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
+<p id="section-abstract-2">The extension is designed as a Compatible vCon extension that introduces lawful basis management capabilities without altering existing vCon semantics. It defines a "lawful_basis" attachment (identified by the attachment "purpose" value "lawful_basis") with structured records for each of the six lawful bases defined in regulations like GDPR, including consent, contract, legal obligation, vital interests, public task, and legitimate interests.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
 <p id="section-abstract-3">Key features include automated lawful basis detection during conversation processing, auditable records with cryptographic proofs, granular purpose-based permissions for all lawful bases, documented justifications for other lawful bases, and integration with privacy regulations including GDPR, CCPA, and HIPAA.<a href="#section-abstract-3" class="pilcrow">¶</a></p>
 </section>
 <section class="note rfcEditorRemove" id="section-note.1">
@@ -1121,7 +1119,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 3 September 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 1 December 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1301,16 +1299,13 @@ svg :is([fill="white"], [fill^="#fff"]) {
                 <p id="section-toc.1-1.15.2.1.1"><a href="#appendix-A.1" class="auto internal xref">A.1</a>.  <a href="#name-vcon-extensions-names-regis" class="internal xref">vCon Extensions Names Registry</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.15.2.2">
-                <p id="section-toc.1-1.15.2.2.1"><a href="#appendix-A.2" class="auto internal xref">A.2</a>.  <a href="#name-attachment-object-parameter" class="internal xref">Attachment Object Parameter Names Registry</a></p>
+                <p id="section-toc.1-1.15.2.2.1"><a href="#appendix-A.2" class="auto internal xref">A.2</a>.  <a href="#name-lawful-basis-attachment-typ" class="internal xref">Lawful Basis Attachment Type Values Registry</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.15.2.3">
-                <p id="section-toc.1-1.15.2.3.1"><a href="#appendix-A.3" class="auto internal xref">A.3</a>.  <a href="#name-lawful-basis-attachment-typ" class="internal xref">Lawful Basis Attachment Type Values Registry</a></p>
+                <p id="section-toc.1-1.15.2.3.1"><a href="#appendix-A.3" class="auto internal xref">A.3</a>.  <a href="#name-lawful-basis-content-hash-a" class="internal xref">Lawful Basis Content Hash Algorithm Values Registry</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.15.2.4">
-                <p id="section-toc.1-1.15.2.4.1"><a href="#appendix-A.4" class="auto internal xref">A.4</a>.  <a href="#name-lawful-basis-content-hash-a" class="internal xref">Lawful Basis Content Hash Algorithm Values Registry</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.15.2.5">
-                <p id="section-toc.1-1.15.2.5.1"><a href="#appendix-A.5" class="auto internal xref">A.5</a>.  <a href="#name-lawful-basis-content-hash-c" class="internal xref">Lawful Basis Content Hash Canonicalization Values Registry</a></p>
+                <p id="section-toc.1-1.15.2.4.1"><a href="#appendix-A.4" class="auto internal xref">A.4</a>.  <a href="#name-lawful-basis-content-hash-c" class="internal xref">Lawful Basis Content Hash Canonicalization Values Registry</a></p>
 </li>
             </ul>
 </li>
@@ -1331,7 +1326,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
       </h2>
 <p id="section-1-1">Conversations originating from all modes (voice, video, email, fax and messaging) <span>[<a href="#I-D.draft-ietf-vcon-overview" class="cite xref">I-D.draft-ietf-vcon-overview</a>]</span>, contain sensitive information that requires a documented lawful basis for processing to comply with privacy regulations and ethical standards. This document defines a lawful basis extension for Virtualized Conversations (vCon) that enables automated lawful basis detection, structured recording, and cryptographic proof mechanisms.<a href="#section-1-1" class="pilcrow">¶</a></p>
 <p id="section-1-2">A vCon (Virtualized Conversation) is a standardized container format for storing conversation data, including metadata, participants, and conversation content, as defined in <span>[<a href="#I-D.draft-ietf-vcon-vcon-core" class="cite xref">I-D.draft-ietf-vcon-vcon-core</a>]</span>. The vCon specification supports extensible attachments that can carry additional structured data related to the conversation.<a href="#section-1-2" class="pilcrow">¶</a></p>
-<p id="section-1-3">This lawful basis extension provides a Compatible vCon extension (as defined in Section 2.5 of <span>[<a href="#I-D.draft-ietf-vcon-vcon-core" class="cite xref">I-D.draft-ietf-vcon-vcon-core</a>]</span>) that introduces lawful basis management capabilities through a standardized "lawful_basis" attachment type. The extension captures essential metadata including:<a href="#section-1-3" class="pilcrow">¶</a></p>
+<p id="section-1-3">This lawful basis extension provides a Compatible vCon extension (as defined in Section 2.5 of <span>[<a href="#I-D.draft-ietf-vcon-vcon-core" class="cite xref">I-D.draft-ietf-vcon-vcon-core</a>]</span>) that introduces lawful basis management capabilities through a standardized "lawful_basis" attachment (identified by the attachment "purpose" value "lawful_basis"). The extension captures essential metadata including:<a href="#section-1-3" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-1-4.1">
           <p id="section-1-4.1.1">The specific lawful basis being asserted for processing<a href="#section-1-4.1.1" class="pilcrow">¶</a></p>
@@ -1374,7 +1369,7 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
         </h3>
 <p id="section-2.1-1"><strong>Lawful Basis</strong>: A valid justification, as defined by applicable law (e.g., GDPR), for the processing of personal data. One of six potential bases must be identified prior to processing.<a href="#section-2.1-1" class="pilcrow">¶</a></p>
 <p id="section-2.1-2"><strong>Data Subject</strong>: The identified or identifiable natural person to whom personal data relates <span>[<a href="#GDPR" class="cite xref">GDPR</a>]</span>.<a href="#section-2.1-2" class="pilcrow">¶</a></p>
-<p id="section-2.1-3"><strong>Lawful Basis Attachment</strong>: A vCon attachment with type "lawful_basis" that contains structured information documenting the lawful basis for processing conversation data.<a href="#section-2.1-3" class="pilcrow">¶</a></p>
+<p id="section-2.1-3"><strong>Lawful Basis Attachment</strong>: A vCon attachment with the "purpose" value "lawful_basis" that contains structured information documenting the lawful basis for processing conversation data.<a href="#section-2.1-3" class="pilcrow">¶</a></p>
 <p id="section-2.1-4"><strong>Attestation Registry</strong>: An external transparency service that maintains an authoritative, verifiable log of attestations about a vCon, which can include attestations of a lawful basis. This document defines integration with registries using the SCITT protocol.<a href="#section-2.1-4" class="pilcrow">¶</a></p>
 <p id="section-2.1-5"><strong>Compatible Extension</strong>: A vCon extension that introduces additional data without altering the meaning or structure of existing elements, as defined in <span>[<a href="#I-D.draft-ietf-vcon-vcon-core" class="cite xref">I-D.draft-ietf-vcon-vcon-core</a>]</span>.<a href="#section-2.1-5" class="pilcrow">¶</a></p>
 </section>
@@ -1466,16 +1461,18 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
 <a href="#section-4.3" class="section-number selfRef">4.3. </a><a href="#name-extension-usage" class="section-name selfRef">Extension Usage</a>
         </h3>
 <p id="section-4.3-1">vCon instances that include lawful basis attachments <span class="bcp14">SHOULD</span> include "lawful_basis" in the <code>extensions</code> array:<a href="#section-4.3-1" class="pilcrow">¶</a></p>
-<p id="section-4.3-2"><code>json
+<div class="lang-json sourcecode" id="section-4.3-2">
+<pre>
 {
-  "uuid": "01234567-89ab-cdef-0123-456789abcdef",
+  "vcon": "0.4.0",
+  "uuid": "01934b2a-7e2f-8c3d-9a1b-2c3d4e5f6a7b",
   "extensions": ["lawful_basis"],
   "created_at": "2025-01-02T12:00:00Z",
   "parties": [...],
   "dialog": [...],
   "attachments": [
     {
-      "type": "lawful_basis",
+      "purpose": "lawful_basis",
       "start": "2025-01-02T12:15:30Z",
       "party": 0,
       "dialog": 0,
@@ -1486,7 +1483,8 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
     }
   ]
 }
-</code><a href="#section-4.3-2" class="pilcrow">¶</a></p>
+</pre><a href="#section-4.3-2" class="pilcrow">¶</a>
+</div>
 </section>
 </div>
 </section>
@@ -1505,25 +1503,25 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
 <p id="section-5.1-2">The lawful basis attachment <span class="bcp14">MUST</span> include:<a href="#section-5.1-2" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-5.1-3.1">
-            <p id="section-5.1-3.1.1"><strong>type</strong>: <span class="bcp14">MUST</span> be set to "lawful_basis"<a href="#section-5.1-3.1.1" class="pilcrow">¶</a></p>
+            <p id="section-5.1-3.1.1"><strong>purpose</strong>: <span class="bcp14">MUST</span> be set to "lawful_basis"<a href="#section-5.1-3.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-5.1-3.2">
             <p id="section-5.1-3.2.1"><strong>encoding</strong>: <span class="bcp14">MUST</span> be set to "json" for structured lawful basis data<a href="#section-5.1-3.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-5.1-3.3">
-            <p id="section-5.1-3.3.1"><strong>body</strong>: <span class="bcp14">MUST</span> contain the lawful basis data structure as defined below<a href="#section-5.1-3.3.1" class="pilcrow">¶</a></p>
+            <p id="section-5.1-3.3.1"><strong>body</strong>: <span class="bcp14">MUST</span> contain the lawful basis data structure as defined below, carried per the "json" encoding defined in Section 2.3.2 of <span>[<a href="#I-D.draft-ietf-vcon-vcon-core" class="cite xref">I-D.draft-ietf-vcon-vcon-core</a>]</span><a href="#section-5.1-3.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-5.1-3.4">
+            <p id="section-5.1-3.4.1"><strong>party</strong>: Index of the party in the vCon parties array (Section 4.4.3 of <span>[<a href="#I-D.draft-ietf-vcon-vcon-core" class="cite xref">I-D.draft-ietf-vcon-vcon-core</a>]</span>); use 0 when no specific party applies<a href="#section-5.1-3.4.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-5.1-3.5">
+            <p id="section-5.1-3.5.1"><strong>dialog</strong>: Index of the associated dialog in the vCon dialog array (Section 4.4.4 of <span>[<a href="#I-D.draft-ietf-vcon-vcon-core" class="cite xref">I-D.draft-ietf-vcon-vcon-core</a>]</span>); use 0 when no specific dialog applies<a href="#section-5.1-3.5.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 <p id="section-5.1-4">The lawful basis attachment <span class="bcp14">SHOULD</span> include:<a href="#section-5.1-4" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-5.1-5.1">
             <p id="section-5.1-5.1.1"><strong>start</strong>: ISO 8601 timestamp <span>[<a href="#RFC3339" class="cite xref">RFC3339</a>]</span> when lawful basis was recorded<a href="#section-5.1-5.1.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-5.1-5.2">
-            <p id="section-5.1-5.2.1"><strong>party</strong>: Index of the party in the vCon parties array<a href="#section-5.1-5.2.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-5.1-5.3">
-            <p id="section-5.1-5.3.1"><strong>dialog</strong>: Index of the associated dialog in the vCon dialog array<a href="#section-5.1-5.3.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </section>
@@ -1577,6 +1575,8 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
                   <p id="section-5.2.2-1.3.2.3.1"><strong>value</strong>: (string, required) The hexadecimal-encoded hash value of the canonicalized lawful basis attachment body.<a href="#section-5.2.2-1.3.2.3.1" class="pilcrow">¶</a></p>
 </li>
               </ul>
+<p id="section-5.2.2-1.3.3">
+This body-level <code>content_hash</code> integrity object is distinct from the attachment-level <code>content_hash</code> parameter defined in Section 2.4 of <span>[<a href="#I-D.draft-ietf-vcon-vcon-core" class="cite xref">I-D.draft-ietf-vcon-vcon-core</a>]</span>, which uses the <code>sha512-</code> Base64url form and applies to externally referenced files.<a href="#section-5.2.2-1.3.3" class="pilcrow">¶</a></p>
 </li>
             <li class="normal" id="section-5.2.2-1.4">
               <p id="section-5.2.2-1.4.1"><strong>registry</strong>: An object containing information about an external attestation registry for audit trails. The object has the following fields:<a href="#section-5.2.2-1.4.1" class="pilcrow">¶</a></p>
@@ -1661,9 +1661,10 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
         <h3 id="name-example-lawful-basis-attach">
 <a href="#section-5.3" class="section-number selfRef">5.3. </a><a href="#name-example-lawful-basis-attach" class="section-name selfRef">Example Lawful Basis Attachment</a>
         </h3>
-<p id="section-5.3-1"><code>json
+<div class="breakable lang-json sourcecode" id="section-5.3-1">
+<pre>
 {
-  "type": "lawful_basis",
+  "purpose": "lawful_basis",
   "start": "2025-01-02T12:15:30Z",
   "party": 0,
   "dialog": 0,
@@ -1712,7 +1713,8 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
     }
   }
 }
-</code><a href="#section-5.3-1" class="pilcrow">¶</a></p>
+</pre><a href="#section-5.3-1" class="pilcrow">¶</a>
+</div>
 </section>
 </div>
 </section>
@@ -2217,7 +2219,7 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
 <dd class="break"></dd>
 <dt id="COSE-ALG">[COSE-ALG]</dt>
         <dd>
-<span class="refAuthor">IANA</span>, <span class="refTitle">"COSE Algorithms"</span>, <time datetime="2026-04" class="refDate">April 2026</time>, <span>&lt;<a href="https://www.iana.org/assignments/cose/cose.xhtml">https://www.iana.org/assignments/cose/cose.xhtml</a>&gt;</span>. </dd>
+<span class="refAuthor">IANA</span>, <span class="refTitle">"COSE Algorithms"</span>, <time datetime="2026-05" class="refDate">May 2026</time>, <span>&lt;<a href="https://www.iana.org/assignments/cose/cose.xhtml">https://www.iana.org/assignments/cose/cose.xhtml</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="FIPS-180-4">[FIPS-180-4]</dt>
         <dd>
@@ -2283,153 +2285,130 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
         </ul>
 </section>
 </div>
-<div id="attachment-object-parameter-names-registry">
+<div id="lawful-basis-attachment-type-values-registry">
 <section id="appendix-A.2">
-        <h3 id="name-attachment-object-parameter">
-<a href="#appendix-A.2" class="section-number selfRef">A.2. </a><a href="#name-attachment-object-parameter" class="section-name selfRef">Attachment Object Parameter Names Registry</a>
+        <h3 id="name-lawful-basis-attachment-typ">
+<a href="#appendix-A.2" class="section-number selfRef">A.2. </a><a href="#name-lawful-basis-attachment-typ" class="section-name selfRef">Lawful Basis Attachment Type Values Registry</a>
         </h3>
-<p id="appendix-A.2-1">This document requests IANA to register the following parameter in the Attachment Object Parameter Names Registry:<a href="#appendix-A.2-1" class="pilcrow">¶</a></p>
+<p id="appendix-A.2-1">This document requests IANA to establish a new registry for lawful basis attachment type values. A registered value is used as the attachment "purpose" parameter (Section 4.4.1 of <span>[<a href="#I-D.draft-ietf-vcon-vcon-core" class="cite xref">I-D.draft-ietf-vcon-vcon-core</a>]</span>) to identify a lawful basis attachment. The registry has the following initial registration:<a href="#appendix-A.2-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-A.2-2.1">
-            <p id="appendix-A.2-2.1.1"><strong>Parameter Name</strong>: type<a href="#appendix-A.2-2.1.1" class="pilcrow">¶</a></p>
+            <p id="appendix-A.2-2.1.1"><strong>Type Value</strong>: lawful_basis<a href="#appendix-A.2-2.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-A.2-2.2">
-            <p id="appendix-A.2-2.2.1"><strong>Parameter Description</strong>: Semantic type identifier for attachment content<a href="#appendix-A.2-2.2.1" class="pilcrow">¶</a></p>
+            <p id="appendix-A.2-2.2.1"><strong>Description</strong>: Structured lawful purpose records with temporal validity and cryptographic proof mechanisms<a href="#appendix-A.2-2.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-A.2-2.3">
             <p id="appendix-A.2-2.3.1"><strong>Change Controller</strong>: IESG<a href="#appendix-A.2-2.3.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-A.2-2.4">
-            <p id="appendix-A.2-2.4.1"><strong>Specification Document(s)</strong>: RFC XXXX, Section 4<a href="#appendix-A.2-2.4.1" class="pilcrow">¶</a></p>
+            <p id="appendix-A.2-2.4.1"><strong>Specification Document(s)</strong>: RFC XXXX<a href="#appendix-A.2-2.4.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="appendix-A.2-3">Note: This addresses the "TODO: type or purpose" noted in Section 6.3.6 of <span>[<a href="#I-D.draft-ietf-vcon-vcon-core" class="cite xref">I-D.draft-ietf-vcon-vcon-core</a>]</span>.<a href="#appendix-A.2-3" class="pilcrow">¶</a></p>
+<p id="appendix-A.2-3">Registration Template:<a href="#appendix-A.2-3" class="pilcrow">¶</a></p>
+<p id="appendix-A.2-4"><strong>Type Value</strong>: The string value used as the attachment "purpose" value identifying this attachment type<a href="#appendix-A.2-4" class="pilcrow">¶</a></p>
+<p id="appendix-A.2-5"><strong>Description</strong>: Brief description of the attachment type and its purpose<a href="#appendix-A.2-5" class="pilcrow">¶</a></p>
+<p id="appendix-A.2-6"><strong>Change Controller</strong>: For Standards Track RFCs, list "IESG". For others, give the name of the responsible party.<a href="#appendix-A.2-6" class="pilcrow">¶</a></p>
+<p id="appendix-A.2-7"><strong>Specification Document(s)</strong>: Reference to defining documents with URIs where available
+## Lawful Basis Registry Type Values Registry<a href="#appendix-A.2-7" class="pilcrow">¶</a></p>
+<p id="appendix-A.2-8">This document requests IANA to establish a new registry for lawful basis registry type values with the following initial registration:<a href="#appendix-A.2-8" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-A.2-9.1">
+            <p id="appendix-A.2-9.1.1"><strong>Type Value</strong>: scitt<a href="#appendix-A.2-9.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-A.2-9.2">
+            <p id="appendix-A.2-9.2.1"><strong>Description</strong>: A transparency service implementing the SCITT (Supply Chain Integrity, Transparency, and Trust) protocol.<a href="#appendix-A.2-9.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-A.2-9.3">
+            <p id="appendix-A.2-9.3.1"><strong>Change Controller</strong>: IESG<a href="#appendix-A.2-9.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-A.2-9.4">
+            <p id="appendix-A.2-9.4.1"><strong>Specification Document(s)</strong>: RFC XXXX, <span>[<a href="#I-D.draft-ietf-scitt-scrapi-07" class="cite xref">I-D.draft-ietf-scitt-scrapi-07</a>]</span><a href="#appendix-A.2-9.4.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<p id="appendix-A.2-10">Registration Template:<a href="#appendix-A.2-10" class="pilcrow">¶</a></p>
+<p id="appendix-A.2-11"><strong>Type Value</strong>: The string value used as the registry type identifier<a href="#appendix-A.2-11" class="pilcrow">¶</a></p>
+<p id="appendix-A.2-12"><strong>Description</strong>: Brief description of the registry type and its purpose<a href="#appendix-A.2-12" class="pilcrow">¶</a></p>
+<p id="appendix-A.2-13"><strong>Change Controller</strong>: For Standards Track RFCs, list "IESG". For others, give the name of the responsible party.<a href="#appendix-A.2-13" class="pilcrow">¶</a></p>
+<p id="appendix-A.2-14"><strong>Specification Document(s)</strong>: Reference to defining documents with URIs where available<a href="#appendix-A.2-14" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="lawful-basis-attachment-type-values-registry">
+<div id="lawful-basis-content-hash-algorithm-values-registry">
 <section id="appendix-A.3">
-        <h3 id="name-lawful-basis-attachment-typ">
-<a href="#appendix-A.3" class="section-number selfRef">A.3. </a><a href="#name-lawful-basis-attachment-typ" class="section-name selfRef">Lawful Basis Attachment Type Values Registry</a>
+        <h3 id="name-lawful-basis-content-hash-a">
+<a href="#appendix-A.3" class="section-number selfRef">A.3. </a><a href="#name-lawful-basis-content-hash-a" class="section-name selfRef">Lawful Basis Content Hash Algorithm Values Registry</a>
         </h3>
-<p id="appendix-A.3-1">This document requests IANA to establish a new registry for lawful basis attachment type values with the following initial registration:<a href="#appendix-A.3-1" class="pilcrow">¶</a></p>
+<p id="appendix-A.3-1">This document requests IANA to establish a new registry for lawful basis content hash algorithm values with the following initial registrations:<a href="#appendix-A.3-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-A.3-2.1">
-            <p id="appendix-A.3-2.1.1"><strong>Type Value</strong>: lawful_basis<a href="#appendix-A.3-2.1.1" class="pilcrow">¶</a></p>
+            <p id="appendix-A.3-2.1.1"><strong>Algorithm Value</strong>: sha-256<a href="#appendix-A.3-2.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-A.3-2.2">
-            <p id="appendix-A.3-2.2.1"><strong>Description</strong>: Structured lawful purpose records with temporal validity and cryptographic proof mechanisms<a href="#appendix-A.3-2.2.1" class="pilcrow">¶</a></p>
+            <p id="appendix-A.3-2.2.1"><strong>Description</strong>: SHA-256 hash algorithm as defined in FIPS 180-4<a href="#appendix-A.3-2.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-A.3-2.3">
             <p id="appendix-A.3-2.3.1"><strong>Change Controller</strong>: IESG<a href="#appendix-A.3-2.3.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-A.3-2.4">
-            <p id="appendix-A.3-2.4.1"><strong>Specification Document(s)</strong>: RFC XXXX<a href="#appendix-A.3-2.4.1" class="pilcrow">¶</a></p>
+            <p id="appendix-A.3-2.4.1"><strong>Specification Document(s)</strong>: RFC XXXX, <span>[<a href="#FIPS-180-4" class="cite xref">FIPS-180-4</a>]</span><a href="#appendix-A.3-2.4.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-A.3-2.5">
+            <p id="appendix-A.3-2.5.1"><strong>Algorithm Value</strong>: sha-3-256<a href="#appendix-A.3-2.5.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-A.3-2.6">
+            <p id="appendix-A.3-2.6.1"><strong>Description</strong>: SHA-3-256 hash algorithm as defined in FIPS 202<a href="#appendix-A.3-2.6.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-A.3-2.7">
+            <p id="appendix-A.3-2.7.1"><strong>Change Controller</strong>: IESG<a href="#appendix-A.3-2.7.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-A.3-2.8">
+            <p id="appendix-A.3-2.8.1"><strong>Specification Document(s)</strong>: RFC XXXX, <span>[<a href="#FIPS-202" class="cite xref">FIPS-202</a>]</span><a href="#appendix-A.3-2.8.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-A.3-2.9">
+            <p id="appendix-A.3-2.9.1"><strong>Algorithm Value</strong>: blake2b-256<a href="#appendix-A.3-2.9.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-A.3-2.10">
+            <p id="appendix-A.3-2.10.1"><strong>Description</strong>: BLAKE2b-256 hash algorithm as defined in RFC 7693<a href="#appendix-A.3-2.10.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-A.3-2.11">
+            <p id="appendix-A.3-2.11.1"><strong>Change Controller</strong>: IESG<a href="#appendix-A.3-2.11.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="appendix-A.3-2.12">
+            <p id="appendix-A.3-2.12.1"><strong>Specification Document(s)</strong>: RFC XXXX, <span>[<a href="#RFC7693" class="cite xref">RFC7693</a>]</span><a href="#appendix-A.3-2.12.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 <p id="appendix-A.3-3">Registration Template:<a href="#appendix-A.3-3" class="pilcrow">¶</a></p>
-<p id="appendix-A.3-4"><strong>Type Value</strong>: The string value used as the attachment type identifier<a href="#appendix-A.3-4" class="pilcrow">¶</a></p>
-<p id="appendix-A.3-5"><strong>Description</strong>: Brief description of the attachment type and its purpose<a href="#appendix-A.3-5" class="pilcrow">¶</a></p>
+<p id="appendix-A.3-4"><strong>Algorithm Value</strong>: The string value used as the hash algorithm identifier<a href="#appendix-A.3-4" class="pilcrow">¶</a></p>
+<p id="appendix-A.3-5"><strong>Description</strong>: Brief description of the hash algorithm and its purpose<a href="#appendix-A.3-5" class="pilcrow">¶</a></p>
 <p id="appendix-A.3-6"><strong>Change Controller</strong>: For Standards Track RFCs, list "IESG". For others, give the name of the responsible party.<a href="#appendix-A.3-6" class="pilcrow">¶</a></p>
-<p id="appendix-A.3-7"><strong>Specification Document(s)</strong>: Reference to defining documents with URIs where available
-## Lawful Basis Registry Type Values Registry<a href="#appendix-A.3-7" class="pilcrow">¶</a></p>
-<p id="appendix-A.3-8">This document requests IANA to establish a new registry for lawful basis registry type values with the following initial registration:<a href="#appendix-A.3-8" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="appendix-A.3-9.1">
-            <p id="appendix-A.3-9.1.1"><strong>Type Value</strong>: scitt<a href="#appendix-A.3-9.1.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="appendix-A.3-9.2">
-            <p id="appendix-A.3-9.2.1"><strong>Description</strong>: A transparency service implementing the SCITT (Supply Chain Integrity, Transparency, and Trust) protocol.<a href="#appendix-A.3-9.2.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="appendix-A.3-9.3">
-            <p id="appendix-A.3-9.3.1"><strong>Change Controller</strong>: IESG<a href="#appendix-A.3-9.3.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="appendix-A.3-9.4">
-            <p id="appendix-A.3-9.4.1"><strong>Specification Document(s)</strong>: RFC XXXX, <span>[<a href="#I-D.draft-ietf-scitt-scrapi-07" class="cite xref">I-D.draft-ietf-scitt-scrapi-07</a>]</span><a href="#appendix-A.3-9.4.1" class="pilcrow">¶</a></p>
-</li>
-        </ul>
-<p id="appendix-A.3-10">Registration Template:<a href="#appendix-A.3-10" class="pilcrow">¶</a></p>
-<p id="appendix-A.3-11"><strong>Type Value</strong>: The string value used as the registry type identifier<a href="#appendix-A.3-11" class="pilcrow">¶</a></p>
-<p id="appendix-A.3-12"><strong>Description</strong>: Brief description of the registry type and its purpose<a href="#appendix-A.3-12" class="pilcrow">¶</a></p>
-<p id="appendix-A.3-13"><strong>Change Controller</strong>: For Standards Track RFCs, list "IESG". For others, give the name of the responsible party.<a href="#appendix-A.3-13" class="pilcrow">¶</a></p>
-<p id="appendix-A.3-14"><strong>Specification Document(s)</strong>: Reference to defining documents with URIs where available<a href="#appendix-A.3-14" class="pilcrow">¶</a></p>
+<p id="appendix-A.3-7"><strong>Specification Document(s)</strong>: Reference to defining documents with URIs where available<a href="#appendix-A.3-7" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="lawful-basis-content-hash-algorithm-values-registry">
+<div id="lawful-basis-content-hash-canonicalization-values-registry">
 <section id="appendix-A.4">
-        <h3 id="name-lawful-basis-content-hash-a">
-<a href="#appendix-A.4" class="section-number selfRef">A.4. </a><a href="#name-lawful-basis-content-hash-a" class="section-name selfRef">Lawful Basis Content Hash Algorithm Values Registry</a>
+        <h3 id="name-lawful-basis-content-hash-c">
+<a href="#appendix-A.4" class="section-number selfRef">A.4. </a><a href="#name-lawful-basis-content-hash-c" class="section-name selfRef">Lawful Basis Content Hash Canonicalization Values Registry</a>
         </h3>
-<p id="appendix-A.4-1">This document requests IANA to establish a new registry for lawful basis content hash algorithm values with the following initial registrations:<a href="#appendix-A.4-1" class="pilcrow">¶</a></p>
+<p id="appendix-A.4-1">This document requests IANA to establish a new registry for lawful basis content hash canonicalization values with the following initial registration:<a href="#appendix-A.4-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-A.4-2.1">
-            <p id="appendix-A.4-2.1.1"><strong>Algorithm Value</strong>: sha-256<a href="#appendix-A.4-2.1.1" class="pilcrow">¶</a></p>
+            <p id="appendix-A.4-2.1.1"><strong>Canonicalization Value</strong>: jcs<a href="#appendix-A.4-2.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-A.4-2.2">
-            <p id="appendix-A.4-2.2.1"><strong>Description</strong>: SHA-256 hash algorithm as defined in FIPS 180-4<a href="#appendix-A.4-2.2.1" class="pilcrow">¶</a></p>
+            <p id="appendix-A.4-2.2.1"><strong>Description</strong>: JSON Canonicalization Scheme as defined in RFC 8785<a href="#appendix-A.4-2.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-A.4-2.3">
             <p id="appendix-A.4-2.3.1"><strong>Change Controller</strong>: IESG<a href="#appendix-A.4-2.3.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="appendix-A.4-2.4">
-            <p id="appendix-A.4-2.4.1"><strong>Specification Document(s)</strong>: RFC XXXX, <span>[<a href="#FIPS-180-4" class="cite xref">FIPS-180-4</a>]</span><a href="#appendix-A.4-2.4.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="appendix-A.4-2.5">
-            <p id="appendix-A.4-2.5.1"><strong>Algorithm Value</strong>: sha-3-256<a href="#appendix-A.4-2.5.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="appendix-A.4-2.6">
-            <p id="appendix-A.4-2.6.1"><strong>Description</strong>: SHA-3-256 hash algorithm as defined in FIPS 202<a href="#appendix-A.4-2.6.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="appendix-A.4-2.7">
-            <p id="appendix-A.4-2.7.1"><strong>Change Controller</strong>: IESG<a href="#appendix-A.4-2.7.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="appendix-A.4-2.8">
-            <p id="appendix-A.4-2.8.1"><strong>Specification Document(s)</strong>: RFC XXXX, <span>[<a href="#FIPS-202" class="cite xref">FIPS-202</a>]</span><a href="#appendix-A.4-2.8.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="appendix-A.4-2.9">
-            <p id="appendix-A.4-2.9.1"><strong>Algorithm Value</strong>: blake2b-256<a href="#appendix-A.4-2.9.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="appendix-A.4-2.10">
-            <p id="appendix-A.4-2.10.1"><strong>Description</strong>: BLAKE2b-256 hash algorithm as defined in RFC 7693<a href="#appendix-A.4-2.10.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="appendix-A.4-2.11">
-            <p id="appendix-A.4-2.11.1"><strong>Change Controller</strong>: IESG<a href="#appendix-A.4-2.11.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="appendix-A.4-2.12">
-            <p id="appendix-A.4-2.12.1"><strong>Specification Document(s)</strong>: RFC XXXX, <span>[<a href="#RFC7693" class="cite xref">RFC7693</a>]</span><a href="#appendix-A.4-2.12.1" class="pilcrow">¶</a></p>
+            <p id="appendix-A.4-2.4.1"><strong>Specification Document(s)</strong>: RFC XXXX, <span>[<a href="#RFC8785" class="cite xref">RFC8785</a>]</span><a href="#appendix-A.4-2.4.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 <p id="appendix-A.4-3">Registration Template:<a href="#appendix-A.4-3" class="pilcrow">¶</a></p>
-<p id="appendix-A.4-4"><strong>Algorithm Value</strong>: The string value used as the hash algorithm identifier<a href="#appendix-A.4-4" class="pilcrow">¶</a></p>
-<p id="appendix-A.4-5"><strong>Description</strong>: Brief description of the hash algorithm and its purpose<a href="#appendix-A.4-5" class="pilcrow">¶</a></p>
+<p id="appendix-A.4-4"><strong>Canonicalization Value</strong>: The string value used as the canonicalization method identifier<a href="#appendix-A.4-4" class="pilcrow">¶</a></p>
+<p id="appendix-A.4-5"><strong>Description</strong>: Brief description of the canonicalization method and its purpose<a href="#appendix-A.4-5" class="pilcrow">¶</a></p>
 <p id="appendix-A.4-6"><strong>Change Controller</strong>: For Standards Track RFCs, list "IESG". For others, give the name of the responsible party.<a href="#appendix-A.4-6" class="pilcrow">¶</a></p>
 <p id="appendix-A.4-7"><strong>Specification Document(s)</strong>: Reference to defining documents with URIs where available<a href="#appendix-A.4-7" class="pilcrow">¶</a></p>
-</section>
-</div>
-<div id="lawful-basis-content-hash-canonicalization-values-registry">
-<section id="appendix-A.5">
-        <h3 id="name-lawful-basis-content-hash-c">
-<a href="#appendix-A.5" class="section-number selfRef">A.5. </a><a href="#name-lawful-basis-content-hash-c" class="section-name selfRef">Lawful Basis Content Hash Canonicalization Values Registry</a>
-        </h3>
-<p id="appendix-A.5-1">This document requests IANA to establish a new registry for lawful basis content hash canonicalization values with the following initial registration:<a href="#appendix-A.5-1" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="appendix-A.5-2.1">
-            <p id="appendix-A.5-2.1.1"><strong>Canonicalization Value</strong>: jcs<a href="#appendix-A.5-2.1.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="appendix-A.5-2.2">
-            <p id="appendix-A.5-2.2.1"><strong>Description</strong>: JSON Canonicalization Scheme as defined in RFC 8785<a href="#appendix-A.5-2.2.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="appendix-A.5-2.3">
-            <p id="appendix-A.5-2.3.1"><strong>Change Controller</strong>: IESG<a href="#appendix-A.5-2.3.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="appendix-A.5-2.4">
-            <p id="appendix-A.5-2.4.1"><strong>Specification Document(s)</strong>: RFC XXXX, <span>[<a href="#RFC8785" class="cite xref">RFC8785</a>]</span><a href="#appendix-A.5-2.4.1" class="pilcrow">¶</a></p>
-</li>
-        </ul>
-<p id="appendix-A.5-3">Registration Template:<a href="#appendix-A.5-3" class="pilcrow">¶</a></p>
-<p id="appendix-A.5-4"><strong>Canonicalization Value</strong>: The string value used as the canonicalization method identifier<a href="#appendix-A.5-4" class="pilcrow">¶</a></p>
-<p id="appendix-A.5-5"><strong>Description</strong>: Brief description of the canonicalization method and its purpose<a href="#appendix-A.5-5" class="pilcrow">¶</a></p>
-<p id="appendix-A.5-6"><strong>Change Controller</strong>: For Standards Track RFCs, list "IESG". For others, give the name of the responsible party.<a href="#appendix-A.5-6" class="pilcrow">¶</a></p>
-<p id="appendix-A.5-7"><strong>Specification Document(s)</strong>: Reference to defining documents with URIs where available<a href="#appendix-A.5-7" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>

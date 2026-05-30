@@ -4,12 +4,12 @@
 
 vCon                                                    T. McCarthy-Howe
 Internet-Draft                                                    VCONIC
-Intended status: Standards Track                            2 March 2026
-Expires: 3 September 2026
+Intended status: Standards Track                             30 May 2026
+Expires: 1 December 2026
 
 
                            vCon Lawful Basis
-                    draft-howe-vcon-lawful-basis-01
+                    draft-howe-vcon-lawful-basis-02
 
 Abstract
 
@@ -24,8 +24,9 @@ Abstract
 
    The extension is designed as a Compatible vCon extension that
    introduces lawful basis management capabilities without altering
-   existing vCon semantics.  It defines a "lawful_basis" attachment type
-   with structured records for each of the six lawful bases defined in
+   existing vCon semantics.  It defines a "lawful_basis" attachment
+   (identified by the attachment "purpose" value "lawful_basis") with
+   structured records for each of the six lawful bases defined in
    regulations like GDPR, including consent, contract, legal obligation,
    vital interests, public task, and legitimate interests.
 
@@ -67,7 +68,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 3 September 2026.
+   This Internet-Draft will expire on 1 December 2026.
 
 Copyright Notice
 
@@ -129,10 +130,9 @@ Table of Contents
      14.2.  Informative References
    Appendix A.  IANA Considerations
      A.1.  vCon Extensions Names Registry
-     A.2.  Attachment Object Parameter Names Registry
-     A.3.  Lawful Basis Attachment Type Values Registry
-     A.4.  Lawful Basis Content Hash Algorithm Values Registry
-     A.5.  Lawful Basis Content Hash Canonicalization Values Registry
+     A.2.  Lawful Basis Attachment Type Values Registry
+     A.3.  Lawful Basis Content Hash Algorithm Values Registry
+     A.4.  Lawful Basis Content Hash Canonicalization Values Registry
    Appendix B.  Acknowledgements
    Author's Address
 
@@ -155,8 +155,9 @@ Table of Contents
    This lawful basis extension provides a Compatible vCon extension (as
    defined in Section 2.5 of [I-D.draft-ietf-vcon-vcon-core]) that
    introduces lawful basis management capabilities through a
-   standardized "lawful_basis" attachment type.  The extension captures
-   essential metadata including:
+   standardized "lawful_basis" attachment (identified by the attachment
+   "purpose" value "lawful_basis").  The extension captures essential
+   metadata including:
 
    *  The specific lawful basis being asserted for processing
 
@@ -195,9 +196,9 @@ Table of Contents
    *Data Subject*: The identified or identifiable natural person to whom
    personal data relates [GDPR].
 
-   *Lawful Basis Attachment*: A vCon attachment with type "lawful_basis"
-   that contains structured information documenting the lawful basis for
-   processing conversation data.
+   *Lawful Basis Attachment*: A vCon attachment with the "purpose" value
+   "lawful_basis" that contains structured information documenting the
+   lawful basis for processing conversation data.
 
    *Attestation Registry*: An external transparency service that
    maintains an authoritative, verifiable log of attestations about a
@@ -297,11 +298,25 @@ Table of Contents
    vCon instances that include lawful basis attachments SHOULD include
    "lawful_basis" in the extensions array:
 
-   json { "uuid": "01234567-89ab-cdef-0123-456789abcdef", "extensions":
-   ["lawful_basis"], "created_at": "2025-01-02T12:00:00Z", "parties":
-   [...], "dialog": [...], "attachments": [ { "type": "lawful_basis",
-   "start": "2025-01-02T12:15:30Z", "party": 0, "dialog": 0, "encoding":
-   "json", "body": { // Lawful basis data structure defined below } } ]
+   {
+     "vcon": "0.4.0",
+     "uuid": "01934b2a-7e2f-8c3d-9a1b-2c3d4e5f6a7b",
+     "extensions": ["lawful_basis"],
+     "created_at": "2025-01-02T12:00:00Z",
+     "parties": [...],
+     "dialog": [...],
+     "attachments": [
+       {
+         "purpose": "lawful_basis",
+         "start": "2025-01-02T12:15:30Z",
+         "party": 0,
+         "dialog": 0,
+         "encoding": "json",
+         "body": {
+           // Lawful basis data structure defined below
+         }
+       }
+     ]
    }
 
 5.  Lawful Basis Attachment Structure
@@ -314,21 +329,26 @@ Table of Contents
 
    The lawful basis attachment MUST include:
 
-   *  *type*: MUST be set to "lawful_basis"
+   *  *purpose*: MUST be set to "lawful_basis"
 
    *  *encoding*: MUST be set to "json" for structured lawful basis data
 
    *  *body*: MUST contain the lawful basis data structure as defined
-      below
+      below, carried per the "json" encoding defined in Section 2.3.2 of
+      [I-D.draft-ietf-vcon-vcon-core]
+
+   *  *party*: Index of the party in the vCon parties array
+      (Section 4.4.3 of [I-D.draft-ietf-vcon-vcon-core]); use 0 when no
+      specific party applies
+
+   *  *dialog*: Index of the associated dialog in the vCon dialog array
+      (Section 4.4.4 of [I-D.draft-ietf-vcon-vcon-core]); use 0 when no
+      specific dialog applies
 
    The lawful basis attachment SHOULD include:
 
    *  *start*: ISO 8601 timestamp [RFC3339] when lawful basis was
       recorded
-
-   *  *party*: Index of the party in the vCon parties array
-
-   *  *dialog*: Index of the associated dialog in the vCon dialog array
 
 5.2.  Lawful Basis Body Structure
 
@@ -371,6 +391,11 @@ Table of Contents
 
       -  *value*: (string, required) The hexadecimal-encoded hash value
          of the canonicalized lawful basis attachment body.
+
+      This body-level content_hash integrity object is distinct from the
+      attachment-level content_hash parameter defined in Section 2.4 of
+      [I-D.draft-ietf-vcon-vcon-core], which uses the sha512- Base64url
+      form and applies to externally referenced files.
 
    *  *registry*: An object containing information about an external
       attestation registry for audit trails.  The object has the
@@ -429,23 +454,56 @@ Table of Contents
 
 5.3.  Example Lawful Basis Attachment
 
-   json { "type": "lawful_basis", "start": "2025-01-02T12:15:30Z",
-   "party": 0, "dialog": 0, "encoding": "json", "body": {
-   "lawful_basis": "consent", "expiration": "2026-01-02T12:00:00Z",
-   "purpose_grants": [ { "purpose": "recording", "granted": true,
-   "granted_at": "2025-01-02T12:15:30Z" }, { "purpose": "transcription",
-   "granted": true, "granted_at": "2025-01-02T12:15:30Z" }, { "purpose":
-   "sentiment_analysis", "granted": false, "granted_at":
-   "2025-01-02T12:15:30Z" } ], "proof_mechanisms": [ { "proof_type":
-   "verbal_confirmation", "timestamp": "2025-01-02T12:15:30Z",
-   "proof_data": { "dialog_reference": 0, "time_offset": "00:01:23",
-   "confirmation_text": "Yes, I consent to recording this call" } } ],
-   "terms_of_service": "https://example.com/terms/v2024.1",
-   "status_interval": "30d", "content_hash": { "algorithm": "sha-256",
-   "canonicalization": "jcs", "value":
-   "a1b2c3d4e5f6789abcdef0123456789abcdef0123456789abcdef0123456789ab"
-   }, "registry": { "type": "scitt", "url":
-   "https://transparency.example.com/lawful_purpose/registry" } } }
+   {
+     "purpose": "lawful_basis",
+     "start": "2025-01-02T12:15:30Z",
+     "party": 0,
+     "dialog": 0,
+     "encoding": "json",
+     "body": {
+       "lawful_basis": "consent",
+       "expiration": "2026-01-02T12:00:00Z",
+       "purpose_grants": [
+         {
+           "purpose": "recording",
+           "granted": true,
+           "granted_at": "2025-01-02T12:15:30Z"
+         },
+         {
+           "purpose": "transcription",
+           "granted": true,
+           "granted_at": "2025-01-02T12:15:30Z"
+         },
+         {
+           "purpose": "sentiment_analysis",
+           "granted": false,
+           "granted_at": "2025-01-02T12:15:30Z"
+         }
+       ],
+       "proof_mechanisms": [
+         {
+           "proof_type": "verbal_confirmation",
+           "timestamp": "2025-01-02T12:15:30Z",
+           "proof_data": {
+             "dialog_reference": 0,
+             "time_offset": "00:01:23",
+             "confirmation_text": "Yes, I consent to recording this call"
+           }
+         }
+       ],
+       "terms_of_service": "https://example.com/terms/v2024.1",
+       "status_interval": "30d",
+       "content_hash": {
+         "algorithm": "sha-256",
+         "canonicalization": "jcs",
+         "value": "a1b2c3d4e5f6789abcdef0123456789abcdef0123456789abcdef0123456789ab"
+       },
+       "registry": {
+         "type": "scitt",
+         "url": "https://transparency.example.com/lawful_purpose/registry"
+       }
+     }
+   }
 
 6.  Lawful Basis Processing Requirements
 
@@ -845,7 +903,7 @@ Table of Contents
    [CCPA]     State of California, "California Consumer Privacy Act",
               2018, <https://oag.ca.gov/privacy/ccpa>.
 
-   [COSE-ALG] IANA, "COSE Algorithms", April 2026,
+   [COSE-ALG] IANA, "COSE Algorithms", May 2026,
               <https://www.iana.org/assignments/cose/cose.xhtml>.
 
    [FIPS-180-4]
@@ -903,27 +961,13 @@ A.1.  vCon Extensions Names Registry
 
    *  *Specification Document(s)*: RFC XXXX
 
-A.2.  Attachment Object Parameter Names Registry
-
-   This document requests IANA to register the following parameter in
-   the Attachment Object Parameter Names Registry:
-
-   *  *Parameter Name*: type
-
-   *  *Parameter Description*: Semantic type identifier for attachment
-      content
-
-   *  *Change Controller*: IESG
-
-   *  *Specification Document(s)*: RFC XXXX, Section 4
-
-   Note: This addresses the "TODO: type or purpose" noted in
-   Section 6.3.6 of [I-D.draft-ietf-vcon-vcon-core].
-
-A.3.  Lawful Basis Attachment Type Values Registry
+A.2.  Lawful Basis Attachment Type Values Registry
 
    This document requests IANA to establish a new registry for lawful
-   basis attachment type values with the following initial registration:
+   basis attachment type values.  A registered value is used as the
+   attachment "purpose" parameter (Section 4.4.1 of
+   [I-D.draft-ietf-vcon-vcon-core]) to identify a lawful basis
+   attachment.  The registry has the following initial registration:
 
    *  *Type Value*: lawful_basis
 
@@ -936,7 +980,8 @@ A.3.  Lawful Basis Attachment Type Values Registry
 
    Registration Template:
 
-   *Type Value*: The string value used as the attachment type identifier
+   *Type Value*: The string value used as the attachment "purpose" value
+   identifying this attachment type
 
    *Description*: Brief description of the attachment type and its
    purpose
@@ -972,7 +1017,7 @@ A.3.  Lawful Basis Attachment Type Values Registry
    *Specification Document(s)*: Reference to defining documents with
    URIs where available
 
-A.4.  Lawful Basis Content Hash Algorithm Values Registry
+A.3.  Lawful Basis Content Hash Algorithm Values Registry
 
    This document requests IANA to establish a new registry for lawful
    basis content hash algorithm values with the following initial
@@ -1016,7 +1061,7 @@ A.4.  Lawful Basis Content Hash Algorithm Values Registry
    *Specification Document(s)*: Reference to defining documents with
    URIs where available
 
-A.5.  Lawful Basis Content Hash Canonicalization Values Registry
+A.4.  Lawful Basis Content Hash Canonicalization Values Registry
 
    This document requests IANA to establish a new registry for lawful
    basis content hash canonicalization values with the following initial
