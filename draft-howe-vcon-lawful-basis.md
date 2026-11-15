@@ -45,9 +45,9 @@ normative:
         ins: D. G Petrie
         name: Daniel G Petrie
         org: SIPez LLC
-    date: January 2026
+    date: October 2026
     seriesinfo:
-      Internet-Draft: draft-ietf-vcon-vcon-core-02
+      Internet-Draft: draft-ietf-vcon-vcon-core-05
 
   I-D.draft-ietf-scitt-scrapi-07:
     target: https://datatracker.ietf.org/doc/draft-ietf-scitt-scrapi/07/
@@ -159,7 +159,7 @@ A vCon (Virtualized Conversation) is a standardized container format for storing
 This lawful basis extension provides a Compatible vCon extension (as defined in Section 2.5 of [I-D.draft-ietf-vcon-vcon-core]) that introduces lawful basis management capabilities through a standardized "lawful_basis" attachment (identified by the attachment "purpose" value "lawful_basis"). The extension captures essential metadata including:
 
 - The specific lawful basis being asserted for processing
-- Party identification (for consent-based processing)
+- The party that asserts or records the lawful basis
 - Temporal validity periods (where applicable)
 - Granular purpose-based permissions
 - Documented justifications for non-consent-based lawful bases
@@ -206,7 +206,74 @@ This lawful basis extension for vCon provides a standardized way to record and v
 
 # vCon Lawful Basis Extension Definition
 
-## Extension Classification
+Section 2.5 of [I-D.draft-ietf-vcon-vcon-core] requires a vCon extension document to contain sections named Extension Name, Parameter Definitions, Compatibility Considerations, Incompatibility Considerations, and Privacy and Integrity Considerations. This document contains each of them.
+
+## Extension Name
+
+The extension token name is "lawful_basis". This is the name registered in the vCon Extensions Names Registry (see {{iana-extensions}}) and the name against which implementations determine whether they support the extension.
+
+As required by Section 4.1.3 of [I-D.draft-ietf-vcon-vcon-core], the name "lawful_basis" MUST appear in the `extensions` parameter of any vCon that contains a lawful basis attachment. The name MUST NOT appear in the `critical` parameter (Section 4.1.4 of [I-D.draft-ietf-vcon-vcon-core]), as this extension is Compatible under all conditions (see {{compatibility}}).
+
+~~~ json
+{
+  "vcon": "0.5.0",
+  "uuid": "01934b2a-7e2f-8c3d-9a1b-2c3d4e5f6a7b",
+  "extensions": ["lawful_basis"],
+  "created_at": "2025-01-02T12:00:00Z",
+  "parties": [
+    {
+      "tel": "+15555550100",
+      "type": "person"
+    },
+    {
+      "mailto": "privacy@example.com",
+      "type": "organization"
+    }
+  ],
+  "dialog": [
+    {
+      "type": "recording",
+      "start": "2025-01-02T12:00:00Z",
+      "duration": 300,
+      "parties": [0, 1],
+      "mediatype": "audio/ogg",
+      "url": "https://example.com/recordings/0001.ogg",
+      "content_hash": "sha512-Y-Q9eclT6b5hFyIfLtnFAAXgqFzN5_Cjr3JQ3DMmcnpXHkGMgtvaxrLW2R2OhFTzR-DinyrngBG2w9lTZXr1EQ"
+    }
+  ],
+  "sessions": [
+    {
+      "start": "2025-01-02T12:00:00Z",
+      "duration": 300,
+      "parties": [0, 1],
+      "dialog": [0]
+    }
+  ],
+  "attachments": [
+    {
+      "purpose": "lawful_basis",
+      "start": "2025-01-02T12:15:30Z",
+      "party": 1,
+      "session": 0,
+      "mediatype": "application/json",
+      "encoding": "json",
+      "body": {
+        "lawful_basis": "consent",
+        "expiration": "2026-01-02T12:00:00Z",
+        "purpose_grants": [
+          {
+            "purpose": "recording",
+            "granted": true,
+            "granted_at": "2025-01-02T12:15:30Z"
+          }
+        ]
+      }
+    }
+  ]
+}
+~~~
+
+## Compatibility Considerations {#compatibility}
 
 The lawful basis extension is a **Compatible Extension** as defined in Section 2.5 of [I-D.draft-ietf-vcon-vcon-core]. This extension:
 
@@ -215,61 +282,37 @@ The lawful basis extension is a **Compatible Extension** as defined in Section 2
 - Does not require listing in the `critical` parameter
 - Maintains backward compatibility with existing vCon implementations
 
-## Extension Registration
+The extension adds no parameters to any existing core Object and no new Objects at the top level of the vCon. All of its data is carried in the `body` of an Attachment Object whose `purpose` is "lawful_basis", using only the `encoding` value "json" defined in Section 2.3.2 of [I-D.draft-ietf-vcon-vcon-core]. The core `purpose` parameter has no restricted set of values, so an implementation that does not support this extension handles a lawful basis attachment as an attachment with a `purpose` it does not recognize, and continues to process the rest of the vCon correctly by ignoring it.
 
-This document defines the "lawful_basis" extension token for registration in the vCon Extensions Names Registry:
+## Incompatibility Considerations
 
-- **Extension Name**: lawful_basis
-- **Extension Description**: Lawful basis management for conversation participants with cryptographic proof mechanisms and regulatory compliance support
-- **Change Controller**: IESG
-- **Specification Document**: This document
+This extension introduces no incompatibilities. It does not redefine or deprecate any core parameter, does not add a value to any parameter whose allowed values are restricted, and does not change the processing of any core Object, including redaction and transcription. An implementation that does not support the extension is not required to take any action, and therefore the extension name is not listed in the `critical` parameter.
 
-## Extension Usage
+# Parameter Definitions
 
-vCon instances that include lawful basis attachments SHOULD include "lawful_basis" in the `extensions` array:
+The extension defines the lawful basis attachment: an Attachment Object, with the parameter requirements in {{attachment-container}}, whose `body` has the structure in {{body-structure}}. The extension defines no other parameters at any level of the vCon schema.
 
-~~~ json
-{
-  "vcon": "0.4.0",
-  "uuid": "01934b2a-7e2f-8c3d-9a1b-2c3d4e5f6a7b",
-  "extensions": ["lawful_basis"],
-  "created_at": "2025-01-02T12:00:00Z",
-  "parties": [...],
-  "dialog": [...],
-  "attachments": [
-    {
-      "purpose": "lawful_basis",
-      "start": "2025-01-02T12:15:30Z",
-      "party": 0,
-      "dialog": 0,
-      "encoding": "json",
-      "body": {
-        // Lawful basis data structure defined below
-      }
-    }
-  ]
-}
-~~~
+## Attachment Container {#attachment-container}
 
-# Lawful Basis Attachment Structure
-
-## Attachment Container
-
-Lawful basis information MUST be included as vCon attachments using the standard attachment object structure defined in Section 4.4 of [I-D.draft-ietf-vcon-vcon-core].
+Lawful basis information MUST be included as vCon attachments using the standard attachment object structure defined in Section 4.6 of [I-D.draft-ietf-vcon-vcon-core].
 
 The lawful basis attachment MUST include:
 
-- **purpose**: MUST be set to "lawful_basis"
+- **purpose**: MUST be set to "lawful_basis" (Section 4.6.1 of [I-D.draft-ietf-vcon-vcon-core])
+- **start**: ISO 8601 timestamp [RFC3339] when lawful basis was recorded (Section 4.6.2 of [I-D.draft-ietf-vcon-vcon-core])
+- **party**: Index of the party in the vCon parties array (Section 4.6.3 of [I-D.draft-ietf-vcon-vcon-core]) that asserts or records the lawful basis, for example the controller or the processor that added the attachment. The identified party need not be a participant in the conversation.
+- **mediatype**: MUST be set to "application/json" (Section 4.6.6 of [I-D.draft-ietf-vcon-vcon-core]), because the body is carried inline
 - **encoding**: MUST be set to "json" for structured lawful basis data
 - **body**: MUST contain the lawful basis data structure as defined below, carried per the "json" encoding defined in Section 2.3.2 of [I-D.draft-ietf-vcon-vcon-core]
-- **party**: Index of the party in the vCon parties array (Section 4.4.3 of [I-D.draft-ietf-vcon-vcon-core]); use 0 when no specific party applies
-- **dialog**: Index of the associated dialog in the vCon dialog array (Section 4.4.4 of [I-D.draft-ietf-vcon-vcon-core]); use 0 when no specific dialog applies
 
-The lawful basis attachment SHOULD include:
+The lawful basis attachment MUST also include at least one of the following scoping parameters, as required by Sections 4.6.4 and 4.6.5 of [I-D.draft-ietf-vcon-vcon-core]:
 
-- **start**: ISO 8601 timestamp [RFC3339] when lawful basis was recorded
+- **session**: Index, or array of indexes, in the vCon sessions array (Section 4.2 of [I-D.draft-ietf-vcon-vcon-core]) of the Session Objects to which the lawful basis applies
+- **dialog**: Index of the associated dialog in the vCon dialog array (Section 4.6.4 of [I-D.draft-ietf-vcon-vcon-core])
 
-## Lawful Basis Body Structure
+A lawful basis that covers a whole conversation is scoped with `session`. A lawful basis that covers one specific recording or message MAY be scoped with `dialog`. A vCon with no Dialog Objects is scoped with `session`. A lawful basis attachment scoped to a Session applies to every Dialog Object that the Session references. Index values are real indexes into the referenced arrays; the value 0 identifies the first element and has no special meaning.
+
+## Lawful Basis Body Structure {#body-structure}
 
 The `body` field of the lawful basis attachment MUST contain a JSON object with the following structure:
 
@@ -321,12 +364,15 @@ Supported proof types include:
 
 ## Example Lawful Basis Attachment
 
+The following attachment records consent for the whole conversation. It is scoped to the Session at index 0 of the `sessions` array and is asserted by the Party at index 1 of the `parties` array.
+
 ~~~ json
 {
   "purpose": "lawful_basis",
   "start": "2025-01-02T12:15:30Z",
-  "party": 0,
-  "dialog": 0,
+  "party": 1,
+  "session": 0,
+  "mediatype": "application/json",
   "encoding": "json",
   "body": {
     "lawful_basis": "consent",
@@ -374,9 +420,33 @@ Supported proof types include:
 }
 ~~~
 
+The following attachment records a lawful basis for one specific recording. It is scoped to the Dialog Object at index 0 of the `dialog` array.
+
+~~~ json
+{
+  "purpose": "lawful_basis",
+  "start": "2025-01-02T12:00:00Z",
+  "party": 1,
+  "dialog": 0,
+  "mediatype": "application/json",
+  "encoding": "json",
+  "body": {
+    "lawful_basis": "legitimate_interests",
+    "expiration": null,
+    "purpose_grants": [
+      {
+        "purpose": "recording",
+        "granted": true,
+        "granted_at": "2025-01-02T12:00:00Z"
+      }
+    ]
+  }
+}
+~~~
+
 # Lawful Basis Processing Requirements
 
-## Content Hash Validation
+## Content Hash Validation {#content-hash-validation}
 
 Implementations MUST validate content hashes when present in lawful basis attachments:
 
@@ -414,18 +484,20 @@ Implementations MUST validate lawful basis expiration before processing:
 Implementations MUST validate attachment references:
 
 1. Verify `party` index exists in vCon parties array
-2. Verify `dialog` indices exist in vCon dialog array
+2. Verify `dialog` index, when present, exists in vCon dialog array
+3. Verify `session` index or indexes, when present, exist in vCon sessions array
+4. Verify that at least one of `dialog` or `session` is present
 
 ## Granular Permission Evaluation
 
 When processing vCon content, implementations MUST:
 
-1. Check for applicable lawful basis attachments for the requested processing purpose
+1. Check for applicable lawful basis attachments for the requested processing purpose, being those whose `dialog` or `session` scope covers the Dialog Object being processed (a Session scope covers every Dialog Object that the Session references)
 2. Evaluate all relevant purpose grants for the specific purpose
 3. Apply most restrictive permission when multiple grants apply
 4. Deny processing if no valid permission exists or if it is explicitly denied
 
-## Proof Verification
+## Proof Verification {#proof-verification}
 
 Implementations SHOULD verify proof mechanisms when present:
 
@@ -515,7 +587,7 @@ The `vcon-core` specification provides general-purpose security mechanisms, such
 - Nonce inclusion in proof mechanisms where applicable.
 - Reference validation to ensure lawful basis applies to correct content.
 
-## Secure Communication Channels
+## Secure Communication Channels {#secure-communication-channels}
 
 **Background:** Lawful basis records are themselves sensitive personal data. It is critical that they are protected while in transit between systems. An attacker in a "man-in-the-middle" position could intercept a vCon and alter it before it reaches its destination, potentially stripping or modifying lawful basis information.
 
@@ -527,9 +599,22 @@ The `vcon-core` specification provides general-purpose security mechanisms, such
 
 **Requirements:** Systems that process or manage lawful basis attachments SHOULD maintain a secure, immutable record of all related activities (e.g., when a lawful basis was given, checked, revoked, or expired). When a `registry` is used, this requirement may be fulfilled by the registry service.
 
+# Privacy and Integrity Considerations
+
+The `body` of a lawful basis attachment can carry personal data. Examples are the `confirmation_text` and other `proof_data` of a proof mechanism, and a `terms_of_service` or `registry` URL that identifies the data subject or the transaction. The `party` parameter of the attachment is an index and carries no party-identifying data itself.
+
+Redaction applies as follows:
+
+- The `body` is carried as a JSON value (see {{attachment-container}}), so the vCon string redaction feature of [I-D.draft-ietf-vcon-vcon-core] applies to the string values within it. This document defines no extension-specific redaction capability.
+- As described in Section 4.6.8 of [I-D.draft-ietf-vcon-vcon-core], the `body` of an attachment MAY be absent from a redacted vCon.
+- Redaction changes the canonical form of the `body`. A body-level `content_hash` computed before redaction no longer matches the redacted `body` (see {{content-hash-validation}}).
+- Data minimization requirements for lawful basis attachments are in {{data-minimization}}.
+
+The extension introduces no new external content references that are covered by the integrity mechanism of Section 2.4.2 of [I-D.draft-ietf-vcon-vcon-core]. The `terms_of_service` URL, the `registry` URL and any external document named in `proof_data` are references carried within the `body`. The `body` is protected by the optional body-level `content_hash` and by vCon signing (see {{secure-communication-channels}}). Verification of external documents is covered in {{proof-verification}}.
+
 # Privacy and Regulatory Compliance
 
-## Data Minimization
+## Data Minimization {#data-minimization}
 
 Lawful basis attachments MUST implement data minimization principles by:
 
@@ -582,18 +667,20 @@ Implementers should conduct thorough security reviews and ensure compliance with
 
 # IANA Considerations
 
-## vCon Extensions Names Registry
+## vCon Extensions Names Registry {#iana-extensions}
 
-This document requests IANA to register the following extension in the vCon Extensions Names Registry established by [I-D.draft-ietf-vcon-vcon-core]:
+This document requests IANA to register the following extension in the vCon Extensions Names Registry established by Section 7.4 of [I-D.draft-ietf-vcon-vcon-core]:
 
 - **Extension Name**: lawful_basis
 - **Extension Description**: Lawful basis management for conversation participants with cryptographic proof mechanisms and regulatory compliance support
 - **Change Controller**: IESG
 - **Specification Document(s)**: RFC XXXX
 
+This document defines no new Attachment Object parameters, and so requests no additions to the Attachment Object Parameter Names Registry (Section 7.3.8 of [I-D.draft-ietf-vcon-vcon-core]). The lawful basis attachment uses the registered parameters `purpose`, `start`, `party`, `dialog`, `session`, `mediatype`, `encoding` and `body`.
+
 ## Lawful Basis Attachment Type Values Registry
 
-This document requests IANA to establish a new registry for lawful basis attachment type values. A registered value is used as the attachment "purpose" parameter (Section 4.4.1 of [I-D.draft-ietf-vcon-vcon-core]) to identify a lawful basis attachment. The registry has the following initial registration:
+This document requests IANA to establish a new registry for lawful basis attachment type values. A registered value is used as the attachment "purpose" parameter (Section 4.6.1 of [I-D.draft-ietf-vcon-vcon-core]) to identify a lawful basis attachment. The registry has the following initial registration:
 
 - **Type Value**: lawful_basis
 - **Description**: Structured lawful purpose records with temporal validity and cryptographic proof mechanisms
@@ -609,6 +696,7 @@ Registration Template:
 **Change Controller**: For Standards Track RFCs, list "IESG". For others, give the name of the responsible party.
 
 **Specification Document(s)**: Reference to defining documents with URIs where available
+
 ## Lawful Basis Registry Type Values Registry
 
 This document requests IANA to establish a new registry for lawful basis registry type values with the following initial registration:
